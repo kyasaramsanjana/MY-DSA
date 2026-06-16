@@ -97,3 +97,21 @@ for(int i = 0; i < arr.length; i++) {
 - Uses array traversal
 - Time complexity: O(n)
 - Space complexity: O(1)
+
+  
+ nextis this
+## Second Largest Element
+
+### Logic
+
+- Keep two variables.
+- largest stores biggest number.
+- secondLargest stores second biggest number.
+
+### Time Complexity
+
+O(n)
+
+### Space Complexity
+
+O(1)
