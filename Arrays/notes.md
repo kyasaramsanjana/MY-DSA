@@ -91,3 +91,9 @@ for(int i = 0; i < arr.length; i++) {
 * Traversal uses loops.
 * `arr.length` gives the size of the array.
 * Arrays have fixed size.
+
+## Largest Element
+
+- Uses array traversal
+- Time complexity: O(n)
+- Space complexity: O(1)
