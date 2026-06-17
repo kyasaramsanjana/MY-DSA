@@ -1,9 +1,13 @@
-# MY-DSA
-My Data Structures and Algorithms learning journey in Java. Daily practice problems, notes, and solutions.
-## Progress
+# Progress Tracker
 
-- Print Array
-- Max & Min
-- Reverse Array
-- Largest Element
-- Second largest
+## Arrays
+
+-Print Array
+-Max and Min
+-Reverse Array
+-Largest Element
+-Second Largest Element
+-Check if Array is Sorted
+-Sum of Array Elements
+
+Total Problems Solved: 7
