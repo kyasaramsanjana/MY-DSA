@@ -115,3 +115,14 @@ O(n)
 ### Space Complexity
 
 O(1)
+# Arrays Notes
+
+## Concepts Learned and completed till now 
+
+1. Array Traversal
+2. Two Pointer Technique
+3. Swapping
+4. Largest Element
+5. Second Largest Element
+6. Sorted Array Checking
+7. Sum of Array Elements
