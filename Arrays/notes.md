@@ -1,128 +1,76 @@
-# Arrays
+Topic: Arrays
+Learning Sources
 
-## Learning Sources
+GeeksforGeeks:https://www.geeksforgeeks.org/java/arrays-in-java/
 
-* GeeksforGeeks: https://www.geeksforgeeks.org/arrays-in-java/
-* YouTube: (Paste the video link you learned from)
+Arrays in Java - GeeksforGeeks
 
-## What is an Array?
+What is an Array?
 
-An array is a collection of elements of the same data type stored in contiguous memory locations.
+An array is a data structure used to store multiple values of the same data type in a single variable.
 
-Example:
+All elements are stored in contiguous (continuous) memory locations.
 
-```java
-int[] arr = {10, 20, 30, 40, 50};
-```
+Example
+int[] arr = {10,20,30,40,50};
+✅_____Why do we use Arrays?
+To store multiple values in one variable.
+Easy access using indexes.
+Easy traversal using loops.
+Better organization of data.
+✅_____Characteristics of Arrays
+Fixed size.
+Stores only similar data types.
+Indexing starts from 0.
+Stored in contiguous memory.
+✅_____Important Terms
 
-## Why Do We Use Arrays?
+1. Index
 
-* Store multiple values in a single variable.
-* Easy access using indexes.
-* Efficient traversal using loops.
+The position of an element inside an array.
 
-## Array Characteristics
-
-* Fixed size.
-* Stores similar data types.
-* Indexing starts from 0.
-* Stored in contiguous memory.
-
-## Important Terms
-
-### Index
-
-Position of an element in the array.
-
-Example:
-
-```java
 arr[0] = 10
 arr[1] = 20
 arr[2] = 30
-```
+2. Length
 
-### Length
+The total number of elements inside an array.
 
-Number of elements in the array.
-
-```java
 arr.length
-```
+✅ Array Traversal
 
-## Array Traversal
+Visiting every element one by one.
 
-Visiting every element of an array one by one.
-
-```java
-for(int i = 0; i < arr.length; i++) {
-    System.out.println(arr[i]);
+for(int i=0;i<arr.length;i++){
+   System.out.println(arr[i]);
 }
-```
+✅ Common Operations
+Traversal
+Searching
+Insertion
+Deletion
+Updating
+⏱️ Time Complexities
+Operation	Complexity
+Access	O(1)
+Traversal	O(n)
+Search	O(n)
+Insertion	O(n)
+Deletion	O(n)
+❌ Common Mistakes
+Using i <= arr.length
+Accessing invalid indexes
+Forgetting indexing starts from 0
+📝 What I Learned Today
 
-## Common Operations
+✔ Arrays store multiple values.
 
-1. Traversal
-2. Searching
-3. Insertion
-4. Deletion
-5. Updating
+✔ Arrays store the same data type.
 
-## Time Complexities
+✔ Indexing starts from 0.
 
-| Operation | Time Complexity |
-| --------- | --------------- |
-| Access    | O(1)            |
-| Traversal | O(n)            |
-| Search    | O(n)            |
-| Insertion | O(n)            |
-| Deletion  | O(n)            |
+✔ arr.length gives the size.
 
-## Common Mistakes
+✔ Traversal uses loops.
 
-* Using `i <= arr.length`
-* Accessing invalid indexes
-* Forgetting array indexing starts from 0
-
-## What I Learned
-
-* Arrays store multiple values.
-* Array indexing starts from 0.
-* Traversal uses loops.
-* `arr.length` gives the size of the array.
-* Arrays have fixed size.
-
-## Largest Element
-
-- Uses array traversal
-- Time complexity: O(n)
-- Space complexity: O(1)
-
-  
- nextis this
-## Second Largest Element
-
-### Logic
-
-- Keep two variables.
-- largest stores biggest number.
-- secondLargest stores second biggest number.
-
-### Time Complexity
-
-O(n)
-
-### Space Complexity
-
-O(1)
-# Arrays Notes
-
-## Concepts Learned and completed till now 
-
-1. Array Traversal
-2. Two Pointer Technique
-3. Swapping
-4. Largest Element
-5. Second Largest Element
-6. Sorted Array Checking
-7. Sum of Array Elements
+✔ Arrays have fixed size.
