@@ -1,24 +1,56 @@
-# Compiled class file
-*.class
+# 🚀 MY-DSA
 
-# Log file
-*.log
+My personal Data Structures and Algorithms repository where I solve problems daily and maintain notes.
 
-# BlueJ files
-*.ctxt
+## 📚 Language
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+* Java
 
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
+## 📂 Completed Topics
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-replay_pid*
+### Arrays ✅
+
+Problems completed:
+
+1. Print Array
+2. Maximum & Minimum Element
+3. Reverse Array
+4. Largest Element
+5. Second Largest Element
+6. Check Sorted Array
+7. Sum of Array Elements
+8. Contains Duplicate
+9. Missing Number
+10. Move Zeroes
+11. Plus One
+
+## 🧠 Concepts Learned
+
+* Array Traversal
+* Swapping
+* Two Pointer Technique
+* Largest Element Pattern
+* Second Largest Element Pattern
+* Sorted Array Checking
+* Duplicate Detection
+* Missing Number Pattern
+* In-place Array Manipulation
+* Carry Handling
+
+## 🎯 Goal
+
+Solve DSA problems consistently and improve problem-solving skills from beginner to advanced.
+
+## 📈 Progress
+
+* Arrays ✅
+* Binary Search 
+* Strings 
+* Hashing 
+* Recursion 
+* Sorting 
+* Linked List 
+* Stack 
+* Queue 
+* Trees 
+* Graphs 
