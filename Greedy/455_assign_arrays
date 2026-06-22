@@ -1,0 +1,81 @@
+leetcode https://leetcode.com/problems/assign-cookies/
+
+Kontha mandi pillalu (children) unnaru.
+
+Prathi pilladiki oka greed factor untundi.
+
+Greed factor ante aa pilladu happy avvadaniki minimum entha size cookie kavalo adi.
+
+Cookies kuda different sizes untayi.
+
+Rules:
+Oka child ki okka cookie matrame ivvali.
+Oka cookie ni okka child ki matrame ivvali.
+Cookie size >= child greed factor ayithe aa child happy.
+
+Mana goal enti?
+
+👉 Maximum number of children ni happy cheyyali.
+Example 1
+g = [1,2,3]
+
+s = [1,1]
+
+g = children greed factors
+
+Child1 ki 1 size cookie saripothundi
+
+Child2 ki 2 size cookie kavali
+
+Child3 ki 3 size cookie kavali
+
+Cookies:
+
+1,1
+
+Ippudu
+
+Cookie 1 → Child1 ✅
+
+Inko cookie 1
+
+Cookie 1 → Child2 ❌
+
+Endhukante Child2 ki minimum 2 kavali.
+
+Child3 ki kuda 3 kavali.
+
+Kabatti answer:
+
+1 child happy
+and the code is here 
+__________________________________________________
+code 
+import java.util.Arrays;
+
+class Solution {
+
+    public int findContentChildren(int[] g, int[] s) {
+
+        Arrays.sort(g);
+
+        Arrays.sort(s);
+
+        int child = 0;
+
+        int cookie = 0;
+
+        while (child < g.length && cookie < s.length) {
+
+            if (s[cookie] >= g[child]) {
+
+                child++;
+            }
+
+            cookie++;
+        }
+
+        return child;
+    }
+}
+___________________________________________________________
