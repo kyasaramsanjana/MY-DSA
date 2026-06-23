@@ -1,0 +1,311 @@
+Bro, this is **traversing (visiting)** a Linked List.
+
+Don't memorize it. Understand what each line is doing.
+
+```java
+void printList(Node head) {
+
+    Node temp = head;
+
+    while (temp != null) {
+
+        System.out.print(temp.data + " → ");
+
+        temp = temp.next;
+    }
+
+    System.out.println("null");
+}
+```
+
+# First imagine we have this linked list
+
+```text
+head
+
+ ↓
+
+10 → 20 → 30 → null
+```
+
+`head` stores the address of the first node.
+
+---
+
+# Line 1
+
+```java
+void printList(Node head)
+```
+
+This is a method.
+
+`head` is passed into the method.
+
+Suppose:
+
+```text
+head
+
+ ↓
+
+10 → 20 → 30 → null
+```
+
+Now the method receives access to the entire linked list.
+
+---
+
+# Line 2
+
+```java
+Node temp = head;
+```
+
+We create a temporary variable.
+
+```text
+head
+
+ ↓
+
+10 → 20 → 30 → null
+
+ ↑
+
+temp
+```
+
+### Why create temp?
+
+Because we should **not move head**.
+
+If we do:
+
+```java
+head = head.next;
+```
+
+head will move and we'll lose the starting position.
+
+So we use another variable.
+
+Think:
+
+```text
+head = original bookmark
+
+temp = helper bookmark
+```
+
+We move the helper bookmark, not the original one.
+
+---
+
+# Line 3
+
+```java
+while (temp != null)
+```
+
+Meaning:
+
+```text
+As long as temp is not null,
+
+keep visiting nodes.
+```
+
+`null` means:
+
+```text
+No next node exists.
+
+End of linked list.
+```
+
+---
+
+# Line 4
+
+```java
+System.out.print(temp.data + " → ");
+```
+
+Print the current node's data.
+
+Initially:
+
+```text
+temp
+
+ ↓
+
+10 → 20 → 30 → null
+```
+
+It prints:
+
+```text
+10 →
+```
+
+---
+
+# Line 5
+
+```java
+temp = temp.next;
+```
+
+Move temp to the next node.
+
+Before:
+
+```text
+temp
+
+ ↓
+
+10 → 20 → 30 → null
+```
+
+After:
+
+```text
+10 → 20 → 30 → null
+
+      ↑
+
+     temp
+```
+
+Now temp points to 20.
+
+---
+
+# Second iteration
+
+Condition:
+
+```java
+while(temp != null)
+```
+
+20 is not null.
+
+Print:
+
+```text
+20 →
+```
+
+Move:
+
+```text
+10 → 20 → 30 → null
+
+            ↑
+
+           temp
+```
+
+---
+
+# Third iteration
+
+30 is not null.
+
+Print:
+
+```text
+30 →
+```
+
+Move:
+
+```text
+10 → 20 → 30 → null
+
+                 ↑
+
+                temp
+```
+
+Now:
+
+```text
+temp = null
+```
+
+---
+
+# Fourth iteration
+
+Check:
+
+```java
+while(temp != null)
+```
+
+Is temp null?
+
+Yes.
+
+So stop.
+
+---
+
+# Last line
+
+```java
+System.out.println("null");
+```
+
+Print:
+
+```text
+null
+```
+
+Final output:
+
+```text
+10 → 20 → 30 → null
+```
+
+# Full dry run table
+
+| Iteration | temp points to | Printed | temp becomes |
+| --------- | -------------- | ------- | ------------ |
+| 1         | 10             | 10 →    | 20           |
+| 2         | 20             | 20 →    | 30           |
+| 3         | 30             | 30 →    | null         |
+| 4         | null           | Stop    | Stop         |
+
+# A trick to remember
+
+Every Linked List traversal always follows this 3-step cycle:
+
+```text
+1. Start from head
+
+2. Do some work (print)
+
+3. Move to next node
+```
+
+```java
+Node temp = head;
+
+while(temp != null){
+
+    // work
+
+    temp = temp.next;
+}
+```
+
+Bro, if you're writing notes, write this sentence in a box ⭐:
+
+> **A Linked List is nothing but visiting one node at a time until we reach null.**
