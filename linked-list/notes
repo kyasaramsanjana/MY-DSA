@@ -1,0 +1,110 @@
+1. What is a Linked List?
+Imagine a treasure hunt — each clue doesn't give you all the answers. It gives you the next clue's location. That's a linked list.
+A linked list is a chain of nodes where each node holds:
+
+Data — the actual value (like 10, 20, 30…)
+Next — the address of the next node
+
+Unlike an array, nodes are not stored side-by-side in memory. Each node can be anywhere — it just points to the next one.
+____________________________________________________________________________________________________________
+2. Key Terms
+TermMeaningNodeOne box — holds data + next pointerHeadThe first node (entry point of the list)TailThe last node (its next = null)nullMeans "nothing after this" — end of list
+____________________________________________________________________________________________________________
+3. Node Structure in Java
+javaclass Node {
+    int data;      // the value stored
+    Node next;     // pointer to next node
+
+    Node(int data) {
+        this.data = data;
+        this.next = null;  // by default, points to nothing
+    }
+}
+________________________________________________________________________________________________________________________________________________________________________________________________________________________
+
+4. Types of Linked Lists
+a) Singly Linked List
+
+Each node points to the next only. One direction — forward only.
+
+10 → 20 → 30 → null
+b) Doubly Linked List
+
+Each node has TWO pointers — one to next, one to previous.
+
+null ← 10 ⇄ 20 ⇄ 30 → null
+c) Circular Linked List
+
+The last node points BACK to the first node. No null — it loops.
+
+10 → 20 → 30 → (back to 10)
+____________________________________________________________________________________________________________
+5. Basic Operations
+a) Create a list
+javaNode head = new Node(10);
+head.next = new Node(20);
+head.next.next = new Node(30);
+// Result: 10 → 20 → 30 → null
+b) Traverse (print all nodes)
+javavoid printList(Node head) {
+    Node temp = head;           // start from head
+    while (temp != null) {      // keep going till end
+        System.out.print(temp.data + " → ");
+        temp = temp.next;       // move to next node
+    }
+    System.out.println("null");
+}
+c) Insert at Beginning
+javaNode insertAtStart(Node head, int val) {
+    Node newNode = new Node(val);
+    newNode.next = head;   // new node points to old head
+    head = newNode;        // new node becomes new head
+    return head;
+}
+d) Insert at End
+javaNode insertAtEnd(Node head, int val) {
+    Node newNode = new Node(val);
+    if (head == null) return newNode;  // list was empty
+    Node temp = head;
+    while (temp.next != null) {        // go to last node
+        temp = temp.next;
+    }
+    temp.next = newNode;               // attach new node
+    return head;
+}
+e) Delete a node by value
+javaNode deleteNode(Node head, int val) {
+    if (head == null) return null;
+    if (head.data == val) return head.next;  // delete head
+    Node temp = head;
+    while (temp.next != null) {
+        if (temp.next.data == val) {
+            temp.next = temp.next.next;  // skip the node
+            break;
+        }
+        temp = temp.next;
+    }
+    return head;
+}
+____________________________________________________________________________________________________________
+
+6. Linked List vs Array
+ArrayLinked ListMemoryContiguous (side by side)Scattered (anywhere)AccessO(1) — direct by indexO(n) — must traverseInsert at startO(n) — shift everythingO(1) — just change headInsert at endO(1) if space availableO(n) — traverse to endSizeFixed (mostly)Dynamic (grows freely)
+Simple rule: Arrays are fast to read, Linked Lists are fast to insert/delete.
+____________________________________________________________________________________________________________
+
+7. Time Complexity Summary
+OperationTimeTraversalO(n)Insert at headO(1)Insert at tailO(n)Delete at headO(1)Delete middle/tailO(n)SearchO(n)
+____________________________________________________________________________________________________________
+
+8. Common Interview Questions (remember these!)
+
+Reverse a linked list
+Detect a cycle in a linked list (Floyd's algorithm)
+Find the middle of a linked list
+Merge two sorted linked lists
+Remove nth node from end
+Check if linked list is a palindrome
+____________________________________________________________________________________________________________
+9. One Analogy to Remember Everything
+Think of a train. Each coach is a node. Each coach has passengers (data) and a connector to the next coach (next pointer). The engine is the HEAD. The last coach's connector is open (null). You can add a new coach at the front or back — but to reach coach 7, you must walk through coaches 1, 2, 3, 4, 5, 6 first.
