@@ -1,0 +1,85 @@
+The user gives the data while the program is running.
+
+We don't know beforehand how many nodes will be created.
+
+Example
+import java.util.Scanner;
+
+class Node {
+
+    int data;
+
+    Node next;
+
+    Node(int data) {
+
+        this.data = data;
+
+        this.next = null;
+    }
+}
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter number of nodes: ");
+
+        int n = sc.nextInt();
+
+        Node head = null;
+
+        Node tail = null;
+
+        for (int i = 0; i < n; i++) {
+
+            int value = sc.nextInt();
+
+            Node newNode = new Node(value);
+
+            if (head == null) {
+
+                head = newNode;
+
+                tail = newNode;
+
+            } else {
+
+                tail.next = newNode;
+
+                tail = newNode;
+            }
+        }
+
+        Node current = head;
+
+        while (current != null) {
+
+            System.out.print(current.data + " -> ");
+
+            current = current.next;
+        }
+
+        System.out.print("null");
+    }
+}
+Input
+Enter number of nodes: 4
+
+10
+
+20
+
+30
+
+40
+Output
+10 -> 20 -> 30 -> 40 -> null
+Pictorial representation
+head
+
+ ↓
+
+10 → 20 → 30 → 40 → null
