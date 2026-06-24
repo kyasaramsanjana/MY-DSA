@@ -1,0 +1,406 @@
+
+# 206. Reverse Linked List
+
+## 1. Understand the problem
+
+We are given:
+
+* `head` → starting node of a linked list.
+
+We must **reverse the linked list**.
+
+Return the new head.
+
+---
+
+## Example
+
+Input
+
+```text
+head = [1,2,3,4,5]
+```
+
+Before
+
+```text
+1 → 2 → 3 → 4 → 5 → null
+```
+
+After reversing
+
+```text
+5 → 4 → 3 → 2 → 1 → null
+```
+
+---
+
+# 2. Observation
+
+Every node points to the next node.
+
+```text
+1 → 2 → 3 → 4 → 5
+```
+
+We need to reverse the arrows.
+
+```text
+1 ← 2 ← 3 ← 4 ← 5
+```
+
+If we directly change links, we may lose the remaining list.
+
+Example:
+
+```text
+1 → 2 → 3 → 4 → 5
+```
+
+If we do
+
+```text
+1.next = null
+```
+
+without saving `2`, we lose access to the rest of the list.
+
+So before changing links, we must save the next node.
+
+---
+
+# 3. We need 3 pointers
+
+```text
+prev
+
+current
+
+next
+```
+
+### Initial setup
+
+```text
+prev = null
+
+current = head
+```
+
+Picture
+
+```text
+null    1 → 2 → 3 → 4 → 5 → null
+
+        ↑
+
+     current
+
+↑
+
+prev
+```
+
+---
+
+# 4. What happens in every iteration?
+
+### Step 1
+
+Save the next node.
+
+```java
+next = current.next;
+```
+
+Picture
+
+```text
+1 → 2 → 3 → 4 → 5
+
+    ↑
+
+   next
+```
+
+---
+
+### Step 2
+
+Reverse the link.
+
+```java
+current.next = prev;
+```
+
+Picture
+
+Before
+
+```text
+1 → 2
+```
+
+After
+
+```text
+1 → null
+```
+
+---
+
+### Step 3
+
+Move prev forward.
+
+```java
+prev = current;
+```
+
+Picture
+
+```text
+1 → null
+
+↑
+
+prev
+```
+
+---
+
+### Step 4
+
+Move current forward.
+
+```java
+current = next;
+```
+
+Picture
+
+```text
+2 → 3 → 4 → 5
+
+↑
+
+current
+```
+
+Repeat until current becomes null.
+
+---
+
+# 5. Dry Run
+
+Input
+
+```text
+1 → 2 → 3 → 4 → 5 → null
+```
+
+Initially
+
+```text
+prev = null
+
+current = 1
+```
+
+---
+
+## Iteration 1
+
+Save next
+
+```text
+next = 2
+```
+
+Reverse
+
+```text
+1 → null
+```
+
+Move pointers
+
+```text
+prev = 1
+
+current = 2
+```
+
+Picture
+
+```text
+1 → null
+
+2 → 3 → 4 → 5
+```
+
+---
+
+## Iteration 2
+
+Save next
+
+```text
+next = 3
+```
+
+Reverse
+
+```text
+2 → 1 → null
+```
+
+Move pointers
+
+```text
+prev = 2
+
+current = 3
+```
+
+Picture
+
+```text
+2 → 1 → null
+
+3 → 4 → 5
+```
+
+---
+
+## Iteration 3
+
+Save next
+
+```text
+next = 4
+```
+
+Reverse
+
+```text
+3 → 2 → 1 → null
+```
+
+Move pointers
+
+```text
+prev = 3
+
+current = 4
+```
+
+---
+
+## Iteration 4
+
+```text
+4 → 3 → 2 → 1 → null
+```
+
+---
+
+## Iteration 5
+
+```text
+5 → 4 → 3 → 2 → 1 → null
+```
+
+Current becomes null.
+
+Stop.
+
+---
+
+# 6. Important observation
+
+At the end:
+
+```text
+current = null
+```
+
+```text
+prev = 5
+```
+
+`prev` is the new head.
+
+Return:
+
+```java
+return prev;
+```
+
+---
+
+# 7. Algorithm
+
+1. Create `prev = null`
+2. Create `current = head`
+3. While current is not null
+
+* Save next node
+* Reverse the link
+* Move prev
+* Move current
+
+4. Return prev
+
+---
+
+# 8. Java Code
+
+```java
+class Solution {
+
+    public ListNode reverseList(ListNode head) {
+
+        ListNode prev = null;
+
+        ListNode current = head;
+
+        while (current != null) {
+
+            ListNode next = current.next;
+
+            current.next = prev;
+
+            prev = current;
+
+            current = next;
+        }
+
+        return prev;
+    }
+}
+```
+
+# 9. Time Complexity
+
+```text
+O(n)
+```
+
+We visit each node once.
+
+---
+
+# 10. Space Complexity
+
+```text
+O(1)
+```
+
+Only extra pointers are used.
+
+---
+
+# 11. One-line note for interviews
+
+> **Whenever you reverse a linked list, use 3 pointers: prev, current, and next. Save the next node before changing links, otherwise you'll lose the remaining list.** 🚀
