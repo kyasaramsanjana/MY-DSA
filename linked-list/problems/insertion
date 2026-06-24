@@ -1,0 +1,270 @@
+# Initial Linked List
+
+Suppose we have:
+
+```text
+10 → 20 → 30 → null
+```
+
+---
+
+# 1. Insert at Beginning
+
+### Example
+
+Insert `5`
+
+Before:
+
+```text
+10 → 20 → 30 → null
+```
+
+After:
+
+```text
+5 → 10 → 20 → 30 → null
+```
+
+## Logic
+
+Step 1:
+
+Create new node
+
+```text
+newNode = 5
+```
+
+Step 2:
+
+Point new node to old head
+
+```text
+5 → 10 → 20 → 30
+```
+
+Step 3:
+
+Move head to new node
+
+```text
+head = 5
+```
+
+## Code
+
+```java
+void insertAtBeginning(int data){
+
+    Node newNode = new Node(data);
+
+    newNode.next = head;
+
+    head = newNode;
+}
+```
+
+---
+
+# 2. Insert at End
+
+### Example
+
+Insert `40`
+
+Before:
+
+```text
+10 → 20 → 30 → null
+```
+
+After:
+
+```text
+10 → 20 → 30 → 40 → null
+```
+
+## Logic
+
+Step 1:
+
+Create new node
+
+```text
+40 → null
+```
+
+Step 2:
+
+Travel to last node
+
+```text
+10 → 20 → 30
+```
+
+Step 3:
+
+Connect last node to new node
+
+```text
+30 → 40
+```
+
+## Code
+
+```java
+void insertAtEnd(int data){
+
+    Node newNode = new Node(data);
+
+    if(head == null){
+
+        head = newNode;
+
+        return;
+    }
+
+    Node temp = head;
+
+    while(temp.next != null){
+
+        temp = temp.next;
+    }
+
+    temp.next = newNode;
+}
+```
+
+---
+
+# 3. Insert at User Chosen Position
+
+Suppose user says:
+
+```text
+Insert 25 at position 3
+```
+
+(Starting positions from 1)
+
+Before:
+
+```text
+1     2     3
+
+10 → 20 → 30 → null
+```
+
+After:
+
+```text
+1     2     3     4
+
+10 → 20 → 25 → 30 → null
+```
+
+## Logic
+
+Move to node before the position.
+
+Move to `20`.
+
+```text
+10 → 20 → 30
+```
+
+Connect new node.
+
+```text
+25 → 30
+```
+
+Connect previous node.
+
+```text
+20 → 25
+```
+
+Done.
+
+---
+
+## Code
+
+```java
+void insertAtPosition(int position, int data){
+
+    Node newNode = new Node(data);
+
+    if(position == 1){
+
+        newNode.next = head;
+
+        head = newNode;
+
+        return;
+    }
+
+    Node temp = head;
+
+    for(int i = 1; i < position - 1; i++){
+
+        temp = temp.next;
+    }
+
+    newNode.next = temp.next;
+
+    temp.next = newNode;
+}
+```
+
+# Full picture
+
+### Insert at beginning
+
+```text
+Before
+
+10 → 20 → 30 → null
+
+After
+
+5 → 10 → 20 → 30 → null
+```
+
+### Insert at end
+
+```text
+Before
+
+10 → 20 → 30 → null
+
+After
+
+10 → 20 → 30 → 40 → null
+```
+
+### Insert at position
+
+```text
+Before
+
+10 → 20 → 30 → null
+
+After inserting 25 at position 3
+
+10 → 20 → 25 → 30 → null
+```
+
+---
+
+For your notes, write this small memory trick ⭐:
+
+```text
+Beginning = change head
+
+End = travel till last node
+
+Position = travel till previous node
+```
