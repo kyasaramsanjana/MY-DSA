@@ -3,7 +3,6 @@
 ## Learning Sources
 
 * GeeksforGeeks: https://www.geeksforgeeks.org/arrays-in-java/
-* YouTube: (Paste the YouTube video link you learned from)
 
 ## Problem Statement
 
