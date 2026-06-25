@@ -86,7 +86,3 @@ Reason: In-place reversal. Only 2 pointer variables used. No extra array.
 - In-place vs extra space trade-off.
 - Why loop condition `start < end` prevents re-swapping middle elements.
 - How to swap using temp variable in Java.
-
-**Pro tip:** If interviewer asks, also mention recursive way:
-```java
-reverse(arr, start+1, end-1) 
