@@ -9,7 +9,7 @@ Input:
 ```text
 [10, 20, 5, 40, 30]
 
-Output:
+Output
 Maximum = 40
 Minimum = 5
 
