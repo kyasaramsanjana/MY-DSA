@@ -1,0 +1,416 @@
+
+## Learning Sources
+
+LeetCode: [https://leetcode.com/problems/third-maximum-number/](https://leetcode.com/problems/third-maximum-number/)
+
+---
+
+# Problem Statement
+
+Given an integer array `nums`, return the **third distinct maximum** number in the array.
+
+If the third distinct maximum does not exist, return the **maximum** number.
+
+---
+
+# Example
+
+### Input
+
+```java
+[3,2,1]
+```
+
+### Output
+
+```java
+1
+```
+
+### Explanation
+
+Distinct numbers are:
+
+```java
+3, 2, 1
+```
+
+The third maximum is:
+
+```java
+1
+```
+
+---
+
+# Another Example
+
+### Input
+
+```java
+[1,2]
+```
+
+### Output
+
+```java
+2
+```
+
+### Explanation
+
+There are only two distinct numbers.
+
+Return the maximum.
+
+---
+
+# Another Example
+
+### Input
+
+```java
+[2,2,3,1]
+```
+
+### Output
+
+```java
+1
+```
+
+### Explanation
+
+Distinct numbers are:
+
+```java
+3,2,1
+```
+
+Duplicate `2` is ignored.
+
+Third maximum is:
+
+```java
+1
+```
+
+---
+
+# Concept Used
+
+* Array Traversal
+* Variable Tracking
+* Duplicate Handling
+
+---
+
+# My Understanding
+
+We only need the **top three distinct maximum numbers**.
+
+Instead of sorting (which takes **O(n log n)**), we can maintain three variables:
+
+* first (largest)
+* second (second largest)
+* third (third largest)
+
+While traversing:
+
+* Ignore duplicates.
+* Update first, second, and third whenever a larger number is found.
+
+At the end:
+
+* If third exists, return it.
+* Otherwise, return first.
+
+---
+
+# My Approach
+
+1. Create three variables:
+
+   * first
+   * second
+   * third
+2. Traverse the array.
+3. Ignore duplicate values.
+4. Update the three maximums.
+5. Return:
+
+   * third if it exists.
+   * otherwise first.
+
+---
+
+# Algorithm
+
+1. Initialize:
+
+```java
+first = null
+second = null
+third = null
+```
+
+2. Traverse every element.
+3. Ignore duplicates.
+4. Update:
+
+   * first
+   * second
+   * third
+5. Return third if present.
+6. Otherwise return first.
+
+---
+
+# Code in Java
+
+```java
+class Solution {
+
+    public int thirdMax(int[] nums) {
+
+        Long first = null;
+        Long second = null;
+        Long third = null;
+
+        for (int num : nums) {
+
+            long n = num;
+
+            if ((first != null && n == first) ||
+                (second != null && n == second) ||
+                (third != null && n == third)) {
+                continue;
+            }
+
+            if (first == null || n > first) {
+
+                third = second;
+                second = first;
+                first = n;
+
+            } else if (second == null || n > second) {
+
+                third = second;
+                second = n;
+
+            } else if (third == null || n > third) {
+
+                third = n;
+            }
+        }
+
+        return third == null ? first.intValue() : third.intValue();
+    }
+}
+```
+
+---
+
+# Dry Run
+
+### Input
+
+```java
+[2,2,3,1]
+```
+
+Initially
+
+```java
+first = null
+second = null
+third = null
+```
+
+---
+
+### num = 2
+
+```java
+first = 2
+```
+
+---
+
+### num = 2
+
+Duplicate
+
+Ignore.
+
+---
+
+### num = 3
+
+```java
+first = 3
+second = 2
+third = null
+```
+
+---
+
+### num = 1
+
+```java
+first = 3
+second = 2
+third = 1
+```
+
+Return
+
+```java
+1
+```
+
+---
+
+# Another Dry Run
+
+### Input
+
+```java
+[1,2]
+```
+
+After traversal
+
+```java
+first = 2
+second = 1
+third = null
+```
+
+Since third doesn't exist,
+
+Return
+
+```java
+2
+```
+
+---
+
+# Output
+
+```java
+Input : [3,2,1]
+Output: 1
+
+Input : [1,2]
+Output: 2
+
+Input : [2,2,3,1]
+Output: 1
+```
+
+---
+
+# Time Complexity
+
+```java
+O(n)
+```
+
+### Reason
+
+We traverse the array only once.
+
+---
+
+# Space Complexity
+
+```java
+O(1)
+```
+
+### Reason
+
+Only three variables are used.
+
+---
+
+# Important Points
+
+* Ignore duplicate values.
+* Do **not** sort the array.
+* Track only the top three distinct maximums.
+* Use `Long` instead of `Integer` to safely handle cases where the array contains `Integer.MIN_VALUE`.
+* If the third distinct maximum doesn't exist, return the largest number.
+
+---
+
+# What I Learned
+
+* How to track multiple maximum values efficiently.
+* How to ignore duplicates while traversing.
+* Why sorting isn't necessary for finding the third maximum.
+* How to optimize from **O(n log n)** to **O(n)**.
+* Why wrapper types (`Long`) help represent an "unset" value.
+
+---
+
+# Pattern
+
+```java
+One Pass Traversal + Maximum Tracking
+```
+
+---
+
+## Brute Force (For Understanding)
+
+```java
+import java.util.*;
+
+class Solution {
+
+    public int thirdMax(int[] nums) {
+
+        TreeSet<Integer> set = new TreeSet<>();
+
+        for (int num : nums) {
+            set.add(num);
+        }
+
+        if (set.size() < 3) {
+            return set.last();
+        }
+
+        set.pollLast();
+        set.pollLast();
+
+        return set.last();
+    }
+}
+```
+
+### Brute Force Complexity
+
+* **Time Complexity:** `O(n log n)`
+* **Space Complexity:** `O(n)`
+
+---
+
+## Interview Pattern
+
+Whenever you see questions like:
+
+* First Maximum
+* Second Maximum
+* Third Maximum
+* K-th Largest (small fixed `k`)
+
+Think:
+
+```text
+One Pass + Variable Tracking
+```
+
+This pattern is commonly used in interview questions that ask for the top few largest or smallest elements without sorting.
