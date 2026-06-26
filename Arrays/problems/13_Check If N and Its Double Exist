@@ -1,0 +1,366 @@
+
+## Learning Sources
+
+LeetCode: [https://leetcode.com/problems/check-if-n-and-its-double-exist/](https://leetcode.com/problems/check-if-n-and-its-double-exist/)
+
+---
+
+# Problem Statement
+
+Given an integer array `arr`, check if there exist two indices:
+
+```java
+i != j
+```
+
+such that:
+
+```java
+arr[i] == 2 * arr[j]
+```
+
+Return:
+
+* `true` if such a pair exists.
+* `false` otherwise.
+
+---
+
+# Example
+
+### Input
+
+```java
+[10,2,5,3]
+```
+
+### Output
+
+```java
+true
+```
+
+### Explanation
+
+```java
+10 = 2 × 5
+```
+
+So the answer is `true`.
+
+---
+
+# Another Example
+
+### Input
+
+```java
+[7,1,14,11]
+```
+
+### Output
+
+```java
+true
+```
+
+### Explanation
+
+```java
+14 = 2 × 7
+```
+
+---
+
+# Another Example
+
+### Input
+
+```java
+[3,1,7,11]
+```
+
+### Output
+
+```java
+false
+```
+
+### Explanation
+
+No element is double of another element.
+
+---
+
+# Concept Used
+
+* Array Traversal
+* HashSet
+* Constant Time Lookup
+
+---
+
+# My Understanding
+
+We need to find whether one number is double of another number.
+
+Instead of comparing every pair (which takes **O(n²)**), we use a **HashSet**.
+
+As we traverse the array:
+
+* Check if double of current number already exists.
+* Check if current number is even and its half already exists.
+* If yes, return `true`.
+* Otherwise, store the current number in the HashSet.
+
+This makes the solution much faster.
+
+---
+
+# My Approach
+
+1. Create a HashSet.
+2. Traverse the array.
+3. For every number:
+
+   * Check if `2 × number` exists.
+   * Check if number is even and `number / 2` exists.
+4. If found, return `true`.
+5. Otherwise add the current number into HashSet.
+6. Return `false`.
+
+---
+
+# Algorithm
+
+1. Create an empty HashSet.
+2. Traverse every element.
+3. If:
+
+   * `set` contains `num * 2`, return `true`.
+   * `num` is even and `set` contains `num / 2`, return `true`.
+4. Otherwise insert current number into HashSet.
+5. Return `false`.
+
+---
+
+# Code in Java
+
+```java
+import java.util.HashSet;
+
+class Solution {
+
+    public boolean checkIfExist(int[] arr) {
+
+        HashSet<Integer> set = new HashSet<>();
+
+        for (int num : arr) {
+
+            if (set.contains(num * 2) ||
+                (num % 2 == 0 && set.contains(num / 2))) {
+
+                return true;
+            }
+
+            set.add(num);
+        }
+
+        return false;
+    }
+}
+```
+
+---
+
+# Dry Run
+
+### Input
+
+```java
+[10,2,5,3]
+```
+
+Initially
+
+```java
+set = {}
+```
+
+---
+
+### Iteration 1
+
+```java
+num = 10
+```
+
+Check:
+
+```java
+20 ❌
+5 ❌
+```
+
+Add
+
+```java
+set = {10}
+```
+
+---
+
+### Iteration 2
+
+```java
+num = 2
+```
+
+Check
+
+```java
+4 ❌
+1 ❌
+```
+
+Add
+
+```java
+set = {10,2}
+```
+
+---
+
+### Iteration 3
+
+```java
+num = 5
+```
+
+Check
+
+```java
+10 ✅
+```
+
+Return
+
+```java
+true
+```
+
+---
+
+# Output
+
+```java
+true
+```
+
+---
+
+# Time Complexity
+
+```java
+O(n)
+```
+
+### Reason
+
+Each element is visited only once.
+
+HashSet operations take approximately **O(1)** time.
+
+---
+
+# Space Complexity
+
+```java
+O(n)
+```
+
+### Reason
+
+In the worst case, all elements are stored in the HashSet.
+
+---
+
+# Important Points
+
+* Use a HashSet for fast searching.
+* Check both:
+
+  * Double of current number.
+  * Half of current number (only if current number is even).
+* Return immediately when a valid pair is found.
+* The indices must be different (`i != j`), which is naturally handled because we check the set **before** adding the current number.
+
+---
+
+# What I Learned
+
+* How to use a HashSet for efficient lookups.
+* How to reduce **O(n²)** brute force to **O(n)**.
+* Why checking both double and half covers all possible cases.
+* How to solve pair-finding problems efficiently.
+
+---
+
+# Pattern
+
+```java
+HashSet + One Pass Traversal
+```
+
+---
+
+## Brute Force (For Understanding)
+
+```java
+class Solution {
+
+    public boolean checkIfExist(int[] arr) {
+
+        for (int i = 0; i < arr.length; i++) {
+
+            for (int j = 0; j < arr.length; j++) {
+
+                if (i != j && arr[i] == 2 * arr[j]) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+}
+```
+
+### Brute Force Complexity
+
+* **Time Complexity:** `O(n²)`
+* **Space Complexity:** `O(1)`
+
+---
+
+### Interview Pattern
+
+Whenever you see questions like:
+
+* Find if a pair exists
+* Find complement of a number
+* Check if a related value already appeared
+
+Think:
+
+```text
+HashSet + One Pass
+```
+
+This same pattern is used in:
+
+* Two Sum
+* Check If N and Its Double Exist
+* Contains Duplicate
+* Happy Number
+* Longest Consecutive Sequence
