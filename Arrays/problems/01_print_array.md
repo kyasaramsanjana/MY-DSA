@@ -1,4 +1,4 @@
-# Print Array
+# Printing the Array
 
 ## Learning Sources
 
