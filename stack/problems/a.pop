@@ -1,0 +1,423 @@
+POP Operation (Stack)
+1. What is Pop?
+
+Imagine a stack of plates.
+
+Top
+ ↓
+Plate 3
+Plate 2
+Plate 1
+
+If someone asks you to remove a plate, which plate can you remove?
+
+✅ Only the top plate.
+
+You cannot remove Plate 2 or Plate 1 directly.
+
+This operation is called POP.
+
+Definition:
+
+Pop removes and returns the top-most element from the stack.
+
+Since a stack follows LIFO (Last In, First Out), the last inserted element is always removed first.
+
+2. Syntax in Java
+stack.pop();
+
+Example
+
+Stack<Integer> stack = new Stack<>();
+
+stack.push(10);
+stack.push(20);
+stack.push(30);
+
+stack.pop();
+3. Visualization
+
+Initially
+
+Top
+ ↓
+30
+20
+10
+
+Now perform
+
+stack.pop();
+
+The top element (30) is removed.
+
+After Pop
+
+Top
+ ↓
+20
+10
+
+Removed Element
+
+30
+4. Step-by-Step Working
+
+Suppose the stack contains
+
+Top
+ ↓
+50
+40
+30
+20
+10
+Step 1
+
+Call
+
+stack.pop();
+Step 2
+
+Stack looks at the top element.
+
+50
+Step 3
+
+Removes it.
+
+Step 4
+
+Returns the removed value.
+
+50
+
+Final Stack
+
+Top
+ ↓
+40
+30
+20
+10
+5. Example Program
+import java.util.Stack;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Stack<Integer> stack = new Stack<>();
+
+        stack.push(10);
+        stack.push(20);
+        stack.push(30);
+
+        System.out.println("Before Pop : " + stack);
+
+        int removed = stack.pop();
+
+        System.out.println("Removed Element : " + removed);
+
+        System.out.println("After Pop : " + stack);
+    }
+}
+Output
+Before Pop : [10, 20, 30]
+
+Removed Element : 30
+
+After Pop : [10, 20]
+6. What Does pop() Return?
+
+Many beginners think Pop only removes an element.
+
+Actually it does two things.
+
+1. Removes the top element
+Top
+ ↓
+30
+20
+10
+
+↓
+
+Top
+ ↓
+20
+10
+2. Returns the removed element
+30
+
+Example
+
+int x = stack.pop();
+
+System.out.println(x);
+
+Output
+
+30
+7. Time Complexity
+Operation	Time Complexity
+Pop	O(1)
+
+Why?
+
+Because the stack always knows where the top element is.
+
+It doesn't need to search.
+
+It simply removes the top element.
+
+8. What Happens Internally?
+
+Suppose the stack is
+
+Top
+ ↓
+30
+20
+10
+
+Internally
+
+top = 2
+
+because 30 is at index 2.
+
+When Pop happens
+
+Return stack[top]
+
+top--
+
+Now
+
+top = 1
+
+New Stack
+
+Top
+ ↓
+20
+10
+
+Only the top pointer moves one position down.
+
+9. Pop in Array Implementation
+
+Suppose
+
+Index
+
+0   1   2
+---------
+10  20  30
+
+top = 2
+
+Pop
+
+Return 30
+
+top = top - 1
+
+Now
+
+Index
+
+0   1   2
+---------
+10  20  30
+
+top = 1
+
+Notice
+
+The value 30 may still exist in memory, but since top = 1, the stack ignores it.
+
+Logically the stack is
+
+20
+10
+10. Pop in Linked List Implementation
+
+Suppose
+
+Head (Top)
+
+↓
+
+30 → 20 → 10 → null
+
+Pop
+
+Move the head to the next node.
+
+head = head.next;
+
+Now
+
+Head
+
+↓
+
+20 → 10 → null
+
+Node 30 is removed.
+
+11. Underflow
+
+What if the stack is empty?
+
+Top
+
+↓
+
+Empty
+
+Now
+
+stack.pop();
+
+There is nothing to remove.
+
+This situation is called
+
+Stack Underflow
+
+In Java
+
+EmptyStackException
+
+is thrown.
+
+12. Safe Way
+
+Instead of directly writing
+
+stack.pop();
+
+Always check
+
+if(!stack.isEmpty())
+{
+    stack.pop();
+}
+
+This prevents an exception.
+
+13. Dry Run
+
+Initially
+
+[]
+
+Push
+
+push(10)
+
+Stack
+
+10
+
+Push
+
+push(20)
+
+20
+10
+
+Push
+
+push(30)
+
+30
+20
+10
+
+Now
+
+pop()
+
+Removed
+
+30
+
+Stack
+
+20
+10
+
+Again
+
+pop()
+
+Removed
+
+20
+
+Stack
+
+10
+
+Again
+
+pop()
+
+Removed
+
+10
+
+Stack
+
+Empty
+
+Again
+
+pop()
+
+❌ Underflow (EmptyStackException)
+
+14. Interview Questions Related to Pop
+What does pop() return?
+What happens if you pop from an empty stack?
+What is the time complexity of pop()?
+Why is pop() an O(1) operation?
+How is pop() implemented in an array?
+How is pop() implemented in a linked list?
+15. One Analogy to Remember Everything
+
+Imagine a stack of books.
+
+Top
+ ↓
+Java
+Python
+C++
+
+You can only remove the Java book first.
+
+pop()
+
+Result
+
+Top
+ ↓
+Python
+C++
+
+You cannot directly remove C++ because Java and Python are above it.
+
+This is why a stack follows LIFO (Last In, First Out).
+
+⭐ Quick Revision (30 Seconds)
+Pop = Remove the top element from the stack.
+Returns the removed element.
+Works only on the top-most element.
+Follows LIFO (Last In, First Out).
+Time Complexity = O(1).
+On an empty stack → Underflow (EmptyStackException in Java).
+Always use isEmpty() before pop() if the stack might be empty.
