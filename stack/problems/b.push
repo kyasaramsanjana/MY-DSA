@@ -1,0 +1,413 @@
+PUSH Operation (Stack)
+1. What is Push?
+
+Imagine a stack of plates in a hotel.
+
+Top
+ ↓
+Plate 2
+Plate 1
+
+A waiter brings a new plate.
+
+Where will he place it?
+
+✅ Only on the TOP.
+
+He cannot place it in the middle or at the bottom.
+
+This operation is called PUSH.
+
+Definition:
+
+Push is the operation of adding (inserting) a new element onto the top of the stack.
+
+Since a stack follows LIFO (Last In, First Out), every new element is always placed on the top.
+
+2. Syntax in Java
+stack.push(element);
+
+Example
+
+Stack<Integer> stack = new Stack<>();
+
+stack.push(10);
+stack.push(20);
+stack.push(30);
+3. Visualization
+
+Initially
+
+Empty Stack
+
+Top
+ ↓
+-----
+Push(10)
+stack.push(10);
+Top
+ ↓
+10
+Push(20)
+stack.push(20);
+Top
+ ↓
+20
+10
+Push(30)
+stack.push(30);
+Top
+ ↓
+30
+20
+10
+
+Notice:
+
+Every new element is added above the previous top element.
+
+4. Step-by-Step Working
+
+Suppose the stack is
+
+Top
+ ↓
+20
+10
+
+Now execute
+
+stack.push(30);
+Step 1
+
+Create the new element
+
+30
+Step 2
+
+Place it above the current top
+
+Top
+ ↓
+30
+20
+10
+Step 3
+
+Update the Top pointer
+
+Now 30 becomes the new Top.
+
+5. Example Program
+import java.util.Stack;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Stack<Integer> stack = new Stack<>();
+
+        stack.push(10);
+        stack.push(20);
+        stack.push(30);
+
+        System.out.println(stack);
+    }
+}
+Output
+[10, 20, 30]
+
+Note:
+
+Java prints the stack from bottom to top.
+
+So
+
+[10, 20, 30]
+
+means
+
+Top
+ ↓
+30
+20
+10
+6. What Does push() Return?
+
+Many beginners think push() returns nothing.
+
+Actually,
+
+push() returns the element that was inserted.
+
+Example
+
+Stack<Integer> stack = new Stack<>();
+
+int x = stack.push(50);
+
+System.out.println(x);
+
+Output
+
+50
+
+Although in most programs we simply write
+
+stack.push(50);
+
+without storing the returned value.
+
+7. Time Complexity
+Operation	Time Complexity
+Push	O(1)
+Why?
+
+Because the new element is always added at the top.
+
+No searching.
+
+No shifting.
+
+No traversal.
+
+Only one insertion.
+
+Therefore,
+
+Time Complexity = O(1)
+
+8. What Happens Internally?
+
+Suppose
+
+Index
+
+0   1
+-------
+10  20
+
+top = 1
+
+Now
+
+push(30)
+
+Internally
+
+top = top + 1
+
+stack[top] = 30
+
+Now
+
+Index
+
+0   1   2
+-----------
+10  20  30
+
+top = 2
+
+The Top pointer moves one position upward.
+
+9. Push in Array Implementation
+
+Initially
+
+Index
+
+0   1   2   3   4
+------------------
+10  20
+
+top = 1
+
+Push
+
+top = top + 1
+
+stack[top] = 30
+
+Final
+
+Index
+
+0   1   2   3   4
+------------------
+10  20  30
+
+top = 2
+10. Push in Linked List Implementation
+
+Initially
+
+Head (Top)
+
+↓
+
+20 → 10 → null
+
+Push(30)
+
+Create a new node
+
+30
+
+Make it point to the old head
+
+newNode.next = head;
+
+Update head
+
+head = newNode;
+
+Final Stack
+
+Head (Top)
+
+↓
+
+30 → 20 → 10 → null
+
+The new node becomes the Top.
+
+11. Overflow
+
+What if the stack is already full?
+
+Suppose the stack size is 5
+
+Top
+ ↓
+50
+40
+30
+20
+10
+
+Now
+
+push(60);
+
+There is no space.
+
+This situation is called
+
+Stack Overflow
+
+For an array implementation, you should check
+
+if(top == capacity - 1)
+{
+    System.out.println("Stack Overflow");
+}
+
+Note:
+
+Java's built-in Stack grows dynamically, so you usually won't encounter overflow with java.util.Stack.
+
+12. Safe Way (Array Implementation)
+
+Before pushing
+
+if(top < capacity - 1)
+{
+    push(element);
+}
+else
+{
+    System.out.println("Stack Overflow");
+}
+13. Dry Run
+
+Initially
+
+Empty
+
+Push
+
+push(10)
+Top
+ ↓
+10
+
+Push
+
+push(20)
+Top
+ ↓
+20
+10
+
+Push
+
+push(30)
+Top
+ ↓
+30
+20
+10
+
+Push
+
+push(40)
+Top
+ ↓
+40
+30
+20
+10
+
+Notice:
+
+Every new element becomes the new Top.
+
+14. Interview Questions Related to Push
+What does push() do?
+What is the time complexity of push()?
+Why is push() an O(1) operation?
+What happens during Stack Overflow?
+How is push() implemented using an array?
+How is push() implemented using a linked list?
+15. One Analogy to Remember Everything
+
+Imagine you're stacking books.
+
+Initially
+
+Top
+ ↓
+Java
+Python
+
+Now you buy a new book:
+
+DSA
+
+Where do you place it?
+
+Top
+ ↓
+DSA
+Java
+Python
+
+You always place the new book on the top.
+
+That is PUSH.
+
+You never insert it in the middle or at the bottom.
+
+⭐ Quick Revision (30 Seconds)
+Push = Insert a new element at the Top of the stack.
+Every new element becomes the new Top.
+Follows LIFO (Last In, First Out).
+push() returns the inserted element (though we usually ignore the return value).
+Time Complexity = O(1).
+Array implementation can cause Stack Overflow if full.
+Linked List implementation inserts the new node at the head (Top).
+
+Memory Trick:
+PUSH = Put on the Top 📚
+Think of adding a new plate or a new book—you always place it on top, never in the middle or bottom.
