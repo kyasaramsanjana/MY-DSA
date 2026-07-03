@@ -1,0 +1,190 @@
+1. Understand the problem
+
+We are given:
+
+Only the node to delete.
+We are NOT given the head of the linked list.
+
+Delete the given node.
+
+Example
+
+Input
+
+Linked List:
+
+4 → 5 → 1 → 9
+
+node = 5
+
+Output
+
+4 → 1 → 9
+Another Example
+
+Input
+
+Linked List:
+
+4 → 5 → 1 → 9
+
+node = 1
+
+Output
+
+4 → 5 → 9
+2. The tricky part
+
+Normally, to delete a node we do:
+
+previous.next = current.next
+
+Example
+
+1 → 2 → 3 → 4
+
+Delete 3
+
+2.next = 4
+
+Result
+
+1 → 2 → 4
+
+But...
+
+In this problem,
+
+We DON'T have the previous node.
+
+We DON'T have the head.
+
+We ONLY have the node to delete.
+
+So the normal deletion method is impossible.
+
+3. Key Observation
+
+Suppose we have
+
+4 → 5 → 1 → 9
+
+      ↑
+
+    node
+
+We cannot remove node 5 directly.
+
+Instead...
+
+Copy the next node's value into the current node.
+
+Before
+
+4 → 5 → 1 → 9
+
+Copy value
+
+4 → 1 → 1 → 9
+
+Now both nodes contain 1.
+
+Next,
+
+Skip the next node.
+
+node.next = node.next.next;
+
+Picture
+
+Before
+
+1 → 1 → 9
+
+After
+
+1 → 9
+
+Final list
+
+4 → 1 → 9
+
+Looks exactly like node 5 was deleted.
+
+4. Algorithm
+Copy the next node's value into the current node.
+Skip the next node.
+Done.
+5. Dry Run
+
+Input
+
+4 → 5 → 1 → 9
+
+Given
+
+node = 5
+Step 1
+
+Copy value
+
+node.val = node.next.val;
+
+List becomes
+
+4 → 1 → 1 → 9
+Step 2
+
+Delete next node
+
+node.next = node.next.next;
+
+List becomes
+
+4 → 1 → 9
+
+Finished.
+
+6. Why does this work?
+
+We cannot remove the current node because we don't know its previous node.
+
+Instead,
+
+Change the current node's value.
+Remove the next node.
+
+From outside, it appears as though the given node has been deleted.
+
+7. Java Code
+class Solution {
+
+    public void deleteNode(ListNode node) {
+
+        node.val = node.next.val;
+
+        node.next = node.next.next;
+    }
+}
+8. Time Complexity
+O(1)
+
+Only two operations are performed.
+
+9. Space Complexity
+O(1)
+
+No extra memory is used.
+
+10. Important Interview Note
+
+This solution works only because the problem guarantees:
+
+The given node is not the last node.
+The node to delete always has a next node.
+
+If it were the last node, this approach would fail because there would be no next node to copy from.
+
+11. One-line note for interviews
+
+When you don't have the previous node, you can't delete the current node directly. Instead, copy the next node's value into the current node and delete the next node. 🚀
