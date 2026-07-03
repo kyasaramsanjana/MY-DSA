@@ -1,0 +1,510 @@
+
+# 1. What is a Stack?
+
+Imagine a stack of plates in a hotel.
+
+You always **place a new plate on the top** and **remove the top plate first**.
+
+You **cannot remove the plate from the middle or bottom**.
+
+This is exactly how a **Stack** works.
+
+A **Stack** is a linear data structure that follows the **LIFO (Last In, First Out)** principle.
+
+The **last element inserted** is the **first element removed**.
+
+Example:
+
+```
+Push 10
+Push 20
+Push 30
+
+Top
+ ↓
+30
+20
+10
+
+Pop()
+
+Top
+ ↓
+20
+10
+```
+
+---
+
+# 2. Key Terms
+
+| Term       | Meaning                                  |
+| ---------- | ---------------------------------------- |
+| Stack      | Collection of elements following LIFO    |
+| LIFO       | Last In, First Out                       |
+| Push       | Insert an element onto the top           |
+| Pop        | Remove the top element                   |
+| Peek (Top) | View the top element without removing it |
+| Empty      | Stack has no elements                    |
+| Overflow   | Stack is full (array implementation)     |
+| Underflow  | Trying to pop from an empty stack        |
+
+---
+
+# 3. Stack in Java
+
+### Using Java Stack Class
+
+```java
+import java.util.Stack;
+
+Stack<Integer> stack = new Stack<>();
+```
+
+### Basic Operations
+
+```java
+stack.push(10);
+stack.push(20);
+stack.push(30);
+
+System.out.println(stack);
+```
+
+Output
+
+```
+[10, 20, 30]
+```
+
+The **rightmost element is always the TOP.**
+
+---
+
+# 4. How Stack Looks
+
+Initially
+
+```
+Empty Stack
+
+Top
+ ↓
+-----
+```
+
+After Push(10)
+
+```
+Top
+ ↓
+10
+```
+
+After Push(20)
+
+```
+Top
+ ↓
+20
+10
+```
+
+After Push(30)
+
+```
+Top
+ ↓
+30
+20
+10
+```
+
+After Pop()
+
+```
+Top
+ ↓
+20
+10
+```
+
+---
+
+# 5. Basic Operations
+
+## a) Push (Insert)
+
+Adds an element to the top.
+
+```java
+Stack<Integer> stack = new Stack<>();
+
+stack.push(10);
+stack.push(20);
+stack.push(30);
+```
+
+Result
+
+```
+Top
+ ↓
+30
+20
+10
+```
+
+---
+
+## b) Pop (Remove Top)
+
+Removes and returns the top element.
+
+```java
+System.out.println(stack.pop());
+```
+
+Output
+
+```
+30
+```
+
+Stack becomes
+
+```
+Top
+ ↓
+20
+10
+```
+
+---
+
+## c) Peek (Top Element)
+
+Returns the top element without removing it.
+
+```java
+System.out.println(stack.peek());
+```
+
+Output
+
+```
+20
+```
+
+Stack remains
+
+```
+Top
+ ↓
+20
+10
+```
+
+---
+
+## d) Check Empty
+
+```java
+System.out.println(stack.isEmpty());
+```
+
+Output
+
+```
+false
+```
+
+---
+
+## e) Size
+
+```java
+System.out.println(stack.size());
+```
+
+Output
+
+```
+2
+```
+
+---
+
+# 6. Complete Example
+
+```java
+import java.util.Stack;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Stack<Integer> stack = new Stack<>();
+
+        stack.push(10);
+        stack.push(20);
+        stack.push(30);
+
+        System.out.println(stack);
+
+        System.out.println(stack.pop());
+
+        System.out.println(stack.peek());
+
+        System.out.println(stack.size());
+
+        System.out.println(stack.isEmpty());
+    }
+}
+```
+
+Output
+
+```
+[10, 20, 30]
+30
+20
+2
+false
+```
+
+---
+
+# 7. Stack Operations Visualization
+
+```
+Push(10)
+
+Top
+ ↓
+10
+```
+
+```
+Push(20)
+
+Top
+ ↓
+20
+10
+```
+
+```
+Push(30)
+
+Top
+ ↓
+30
+20
+10
+```
+
+```
+Pop()
+
+Top
+ ↓
+20
+10
+```
+
+```
+Peek()
+
+Returns 20
+
+Top
+ ↓
+20
+10
+```
+
+---
+
+# 8. Time Complexity Summary
+
+| Operation | Time |
+| --------- | ---- |
+| Push      | O(1) |
+| Pop       | O(1) |
+| Peek      | O(1) |
+| isEmpty   | O(1) |
+| Size      | O(1) |
+| Search    | O(n) |
+
+---
+
+# 9. Stack vs Queue
+
+| Stack           | Queue             |
+| --------------- | ----------------- |
+| LIFO            | FIFO              |
+| Insert at Top   | Insert at Rear    |
+| Remove from Top | Remove from Front |
+| One End         | Two Ends          |
+| Plate Stack     | Ticket Queue      |
+
+Example
+
+Stack
+
+```
+Push:
+10
+20
+30
+
+Pop Order:
+
+30
+20
+10
+```
+
+Queue
+
+```
+Enqueue:
+10
+20
+30
+
+Dequeue Order:
+
+10
+20
+30
+```
+
+---
+
+# 10. Applications of Stack
+
+Stacks are used in many real-world scenarios:
+
+* Function Calls (Call Stack)
+* Undo/Redo in editors
+* Browser Back Button
+* Expression Evaluation
+* Parentheses Matching
+* Backtracking Algorithms
+* DFS (Depth First Search)
+* Recursion
+
+---
+
+# 11. Common Interview Questions
+
+* Valid Parentheses
+* Min Stack
+* Next Greater Element
+* Daily Temperatures
+* Largest Rectangle in Histogram
+* Stock Span Problem
+* Evaluate Reverse Polish Notation
+* Decode String
+* Remove K Digits
+* Asteroid Collision
+
+---
+
+# 12. Common Mistakes Beginners Make
+
+### ❌ Pop from Empty Stack
+
+```java
+stack.pop();
+```
+
+Throws
+
+```
+EmptyStackException
+```
+
+Always check
+
+```java
+if(!stack.isEmpty()){
+    stack.pop();
+}
+```
+
+---
+
+### ❌ Peek from Empty Stack
+
+```java
+stack.peek();
+```
+
+Also throws
+
+```
+EmptyStackException
+```
+
+---
+
+### ❌ Thinking Bottom is the Top
+
+Remember
+
+```
+Top
+ ↓
+30
+20
+10
+```
+
+Only **30** can be removed.
+
+---
+
+# 13. One Analogy to Remember Everything
+
+Imagine a **stack of books** on a table.
+
+```
+Top
+ ↓
+Math
+Science
+English
+```
+
+You place a new book **only on the top**.
+
+```
+History
+
+Math
+Science
+English
+```
+
+If you want the **English** book, you **must first remove History, then Math, then Science**.
+
+That is **LIFO (Last In, First Out)**.
+
+---
+
+# 14. Cheat Sheet (Revision in 30 Seconds)
+
+* **Stack = LIFO (Last In, First Out)**
+* **Push = Add at Top**
+* **Pop = Remove Top**
+* **Peek = View Top**
+* **isEmpty() = Check if Empty**
+* **size() = Number of Elements**
+* **Push, Pop, Peek = O(1)**
+* **Used in Recursion, Browser History, Undo/Redo, DFS, Expression Evaluation**
+* **Remember the Plate Stack Analogy** 🍽️
+
+This format matches your Linked List notes and is ideal for quick revision before interviews or solving LeetCode stack problems.
