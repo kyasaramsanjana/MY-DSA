@@ -1,0 +1,567 @@
+## 1. What is Peek?
+
+Imagine a stack of plates in a hotel.
+
+```
+Top
+ ↓
+Plate 3
+Plate 2
+Plate 1
+```
+
+The waiter wants to know **which plate is on the top**.
+
+Will he remove it?
+
+❌ No.
+
+He simply **looks at the top plate** without taking it away.
+
+This operation is called **PEEK**.
+
+### Definition
+
+**Peek** is the operation of viewing (accessing) the **top element** of the stack **without removing it**.
+
+Since a stack follows **LIFO (Last In, First Out)**, the top element is always the most recently inserted element.
+
+---
+
+# 2. Syntax in Java
+
+```java
+stack.peek();
+```
+
+### Example
+
+```java
+Stack<Integer> stack = new Stack<>();
+
+stack.push(10);
+stack.push(20);
+stack.push(30);
+
+System.out.println(stack.peek());
+```
+
+---
+
+# 3. Visualization
+
+### Initially
+
+```
+Top
+ ↓
+30
+20
+10
+```
+
+### Peek()
+
+```java
+stack.peek();
+```
+
+After peek
+
+```
+Top
+ ↓
+30
+20
+10
+```
+
+Notice:
+
+**Nothing is removed.**
+
+The stack remains exactly the same.
+
+---
+
+# 4. Step-by-Step Working
+
+Suppose the stack is
+
+```
+Top
+ ↓
+30
+20
+10
+```
+
+Now execute
+
+```java
+stack.peek();
+```
+
+### Step 1
+
+Go to the top element.
+
+```
+Top
+ ↓
+30
+```
+
+### Step 2
+
+Read its value.
+
+```
+30
+```
+
+### Step 3
+
+Return the value.
+
+```
+Returned Value = 30
+```
+
+### Step 4
+
+Do **not** remove it.
+
+Final stack
+
+```
+Top
+ ↓
+30
+20
+10
+```
+
+---
+
+# 5. Example Program
+
+```java
+import java.util.Stack;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Stack<Integer> stack = new Stack<>();
+
+        stack.push(10);
+        stack.push(20);
+        stack.push(30);
+
+        System.out.println("Top Element: " + stack.peek());
+
+        System.out.println("Stack: " + stack);
+    }
+}
+```
+
+### Output
+
+```
+Top Element: 30
+Stack: [10, 20, 30]
+```
+
+Notice:
+
+The stack is still
+
+```
+Top
+ ↓
+30
+20
+10
+```
+
+Peek **does not change** the stack.
+
+---
+
+# 6. What Does peek() Return?
+
+`peek()` returns the **top element** of the stack.
+
+Example
+
+```java
+Stack<Integer> stack = new Stack<>();
+
+stack.push(100);
+stack.push(200);
+
+int x = stack.peek();
+
+System.out.println(x);
+```
+
+### Output
+
+```
+200
+```
+
+Here,
+
+```
+Top
+ ↓
+200
+100
+```
+
+So `peek()` returns **200**.
+
+---
+
+# 7. Time Complexity
+
+| Operation | Time Complexity |
+| --------- | --------------- |
+| Peek      | **O(1)**        |
+
+### Why?
+
+Because the top element is already known.
+
+No searching.
+
+No traversal.
+
+No shifting.
+
+Only one access.
+
+Therefore,
+
+**Time Complexity = O(1)**
+
+---
+
+# 8. What Happens Internally?
+
+Suppose
+
+```
+Index
+
+0   1   2
+-----------
+10  20  30
+
+top = 2
+```
+
+Now execute
+
+```java
+peek();
+```
+
+Internally
+
+```java
+return stack[top];
+```
+
+Nothing changes.
+
+```
+Index
+
+0   1   2
+-----------
+10  20  30
+
+top = 2
+```
+
+The Top pointer stays at the same position.
+
+---
+
+# 9. Peek in Array Implementation
+
+Initially
+
+```
+Index
+
+0   1   2   3   4
+------------------
+10  20  30
+
+top = 2
+```
+
+Peek
+
+```java
+return stack[top];
+```
+
+Result
+
+```
+30
+```
+
+Final Array
+
+```
+Index
+
+0   1   2   3   4
+------------------
+10  20  30
+
+top = 2
+```
+
+Nothing changes.
+
+---
+
+# 10. Peek in Linked List Implementation
+
+Initially
+
+```
+Head (Top)
+
+↓
+
+30 → 20 → 10 → null
+```
+
+Peek
+
+```java
+return head.data;
+```
+
+Result
+
+```
+30
+```
+
+Final Stack
+
+```
+Head (Top)
+
+↓
+
+30 → 20 → 10 → null
+```
+
+No node is removed.
+
+The Head remains the same.
+
+---
+
+# 11. What Happens if the Stack is Empty?
+
+Suppose
+
+```
+Top
+ ↓
+
+Empty Stack
+```
+
+Now execute
+
+```java
+stack.peek();
+```
+
+There is no top element.
+
+This causes an **Empty Stack** condition.
+
+In Java,
+
+```java
+stack.peek();
+```
+
+throws
+
+```
+EmptyStackException
+```
+
+For an array implementation, check
+
+```java
+if(top == -1)
+{
+    System.out.println("Stack is Empty");
+}
+```
+
+---
+
+# 12. Safe Way (Array Implementation)
+
+Before peeking
+
+```java
+if(top != -1)
+{
+    System.out.println(stack[top]);
+}
+else
+{
+    System.out.println("Stack is Empty");
+}
+```
+
+---
+
+# 13. Dry Run
+
+Initially
+
+```
+Empty
+```
+
+Push
+
+```
+push(10)
+
+Top
+ ↓
+10
+```
+
+Push
+
+```
+push(20)
+
+Top
+ ↓
+20
+10
+```
+
+Push
+
+```
+push(30)
+
+Top
+ ↓
+30
+20
+10
+```
+
+Now
+
+```
+peek()
+```
+
+Output
+
+```
+30
+```
+
+Stack after peek
+
+```
+Top
+ ↓
+30
+20
+10
+```
+
+Notice:
+
+The top element is **only viewed**, not removed.
+
+---
+
+# 14. Interview Questions Related to Peek
+
+* What does `peek()` do?
+* What is the time complexity of `peek()`?
+* Why is `peek()` an O(1) operation?
+* Does `peek()` remove the element?
+* What happens if `peek()` is called on an empty stack?
+* How is `peek()` implemented using an array?
+* How is `peek()` implemented using a linked list?
+
+---
+
+# 15. One Analogy to Remember Everything
+
+Imagine you're stacking books.
+
+Initially
+
+```
+Top
+ ↓
+DSA
+Java
+Python
+```
+
+You want to know **which book is on the top**.
+
+You simply **look at it**.
+
+```
+Top
+ ↓
+DSA
+Java
+Python
+```
+
+You don't remove the DSA book.
+
+That is **PEEK**.
+
+You only **see** the top book.
+
+---
+
+# ⭐ Quick Revision (30 Seconds)
+
+* **Peek = View the top element without removing it.**
+* Returns the current top element.
+* The stack remains unchanged.
+* Follows **LIFO (Last In, First Out)**.
+* Time Complexity = **O(1)**.
+* Array implementation returns `stack[top]`.
+* Linked List implementation returns `head.data`.
+* Calling `peek()` on an empty stack causes an **EmptyStackException** (or "Stack is Empty" in a custom implementation).
+
+## 🧠 Memory Trick
+
+**PEEK = Peek at the Top 👀**
+
+Think of looking at the **top plate** or the **top book**. You only **look** at it—you **don't remove** it.
