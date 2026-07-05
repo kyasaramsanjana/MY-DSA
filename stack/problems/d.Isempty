@@ -1,0 +1,796 @@
+# isEmpty() Operation (Stack)
+
+## 1. What is isEmpty()?
+
+Imagine a stack of plates in a hotel.
+
+### Case 1
+
+```
+Top
+ ↓
+Plate 3
+Plate 2
+Plate 1
+```
+
+There are plates in the stack.
+
+So the answer is:
+
+**Is the stack empty?**
+
+✅ **No**
+
+---
+
+### Case 2
+
+```
+Top
+ ↓
+-----
+```
+
+There are no plates.
+
+So the answer is:
+
+**Is the stack empty?**
+
+✅ **Yes**
+
+This checking operation is called **isEmpty()**.
+
+---
+
+### Definition
+
+**isEmpty() is the operation used to check whether the stack contains any elements or not.**
+
+* If the stack has **zero elements**, it returns **true**.
+* If the stack has **one or more elements**, it returns **false**.
+
+It **does not remove** or **add** anything.
+
+It only checks the stack.
+
+---
+
+# 2. Syntax in Java
+
+```java
+stack.isEmpty();
+```
+
+Example
+
+```java
+Stack<Integer> stack = new Stack<>();
+
+System.out.println(stack.isEmpty());
+
+stack.push(10);
+
+System.out.println(stack.isEmpty());
+```
+
+---
+
+# 3. Visualization
+
+### Initially
+
+```
+Top
+ ↓
+-----
+```
+
+Execute
+
+```java
+stack.isEmpty();
+```
+
+Returns
+
+```
+true
+```
+
+---
+
+Now
+
+```java
+stack.push(10);
+```
+
+```
+Top
+ ↓
+10
+```
+
+Execute
+
+```java
+stack.isEmpty();
+```
+
+Returns
+
+```
+false
+```
+
+---
+
+## Notice
+
+If at least **one element** exists,
+
+```
+Top
+ ↓
+10
+```
+
+or
+
+```
+Top
+ ↓
+30
+20
+10
+```
+
+then
+
+```
+isEmpty()
+```
+
+always returns
+
+```
+false
+```
+
+---
+
+# 4. Step-by-Step Working
+
+Suppose the stack is
+
+```
+Top
+ ↓
+-----
+```
+
+Execute
+
+```java
+stack.isEmpty();
+```
+
+### Step 1
+
+Check the number of elements.
+
+```
+Elements = 0
+```
+
+---
+
+### Step 2
+
+Since there are no elements,
+
+Return
+
+```
+true
+```
+
+---
+
+Another Example
+
+Stack contains
+
+```
+Top
+ ↓
+30
+20
+10
+```
+
+Execute
+
+```java
+stack.isEmpty();
+```
+
+### Step 1
+
+Count the elements.
+
+```
+Elements = 3
+```
+
+### Step 2
+
+Since elements exist,
+
+Return
+
+```
+false
+```
+
+---
+
+# 5. Example Program
+
+```java
+import java.util.Stack;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Stack<Integer> stack = new Stack<>();
+
+        System.out.println(stack.isEmpty());
+
+        stack.push(10);
+        stack.push(20);
+
+        System.out.println(stack.isEmpty());
+    }
+}
+```
+
+### Output
+
+```
+true
+false
+```
+
+Explanation
+
+Initially
+
+```
+Top
+ ↓
+-----
+```
+
+Stack is empty.
+
+After pushing
+
+```
+Top
+ ↓
+20
+10
+```
+
+Stack is no longer empty.
+
+---
+
+# 6. What Does isEmpty() Return?
+
+Unlike `push()`, `isEmpty()` returns a **boolean** value.
+
+Possible return values:
+
+```
+true
+```
+
+or
+
+```
+false
+```
+
+Example
+
+```java
+Stack<Integer> stack = new Stack<>();
+
+boolean result = stack.isEmpty();
+
+System.out.println(result);
+```
+
+Output
+
+```
+true
+```
+
+Another Example
+
+```java
+Stack<Integer> stack = new Stack<>();
+
+stack.push(50);
+
+boolean result = stack.isEmpty();
+
+System.out.println(result);
+```
+
+Output
+
+```
+false
+```
+
+---
+
+# 7. Time Complexity
+
+| Operation | Time Complexity |
+| --------- | --------------- |
+| isEmpty() | **O(1)**        |
+
+### Why?
+
+Because Java only checks
+
+* whether the stack size is **0**
+* or whether **Top = -1** (array implementation)
+
+No searching.
+
+No traversal.
+
+No looping.
+
+Only one simple comparison.
+
+Therefore,
+
+```
+Time Complexity = O(1)
+```
+
+---
+
+# 8. What Happens Internally?
+
+Suppose
+
+```
+Index
+
+0   1
+-------
+10  20
+
+top = 1
+```
+
+Execute
+
+```java
+isEmpty();
+```
+
+Internally
+
+```
+if(top == -1)
+    return true;
+else
+    return false;
+```
+
+Since
+
+```
+top = 1
+```
+
+Return
+
+```
+false
+```
+
+---
+
+Now suppose
+
+```
+Index
+
+0   1
+-------
+-
+
+top = -1
+```
+
+Execute
+
+```java
+isEmpty();
+```
+
+Return
+
+```
+true
+```
+
+---
+
+# 9. isEmpty() in Array Implementation
+
+Initially
+
+```
+Index
+
+0   1   2   3
+--------------
+-
+
+top = -1
+```
+
+Check
+
+```java
+if(top == -1)
+```
+
+Return
+
+```
+true
+```
+
+---
+
+After pushing
+
+```
+Index
+
+0   1   2
+----------
+10 20
+
+top = 1
+```
+
+Check
+
+```java
+if(top == -1)
+```
+
+Condition becomes false.
+
+Return
+
+```
+false
+```
+
+---
+
+# 10. isEmpty() in Linked List Implementation
+
+Initially
+
+```
+Head (Top)
+
+null
+```
+
+Execute
+
+```java
+isEmpty();
+```
+
+Internally
+
+```java
+if(head == null)
+    return true;
+```
+
+Return
+
+```
+true
+```
+
+---
+
+After pushing
+
+```
+Head
+
+↓
+
+30 → 20 → 10 → null
+```
+
+Execute
+
+```java
+isEmpty();
+```
+
+Internally
+
+```java
+if(head == null)
+```
+
+Condition is false.
+
+Return
+
+```
+false
+```
+
+---
+
+# 11. Why is isEmpty() Important?
+
+Many operations like
+
+* `pop()`
+* `peek()`
+
+cannot be performed on an empty stack.
+
+Before removing or viewing the top element, we first check
+
+```java
+if(stack.isEmpty())
+{
+    System.out.println("Stack is Empty");
+}
+else
+{
+    System.out.println(stack.pop());
+}
+```
+
+This avoids runtime errors like
+
+```
+EmptyStackException
+```
+
+---
+
+# 12. Safe Way to Use pop()
+
+Instead of directly writing
+
+```java
+stack.pop();
+```
+
+Write
+
+```java
+if(!stack.isEmpty())
+{
+    stack.pop();
+}
+else
+{
+    System.out.println("Cannot pop. Stack is empty.");
+}
+```
+
+This is considered a good programming practice.
+
+---
+
+# 13. Dry Run
+
+Initially
+
+```
+Top
+ ↓
+-----
+```
+
+Execute
+
+```
+isEmpty()
+```
+
+Returns
+
+```
+true
+```
+
+---
+
+Push
+
+```java
+push(10)
+```
+
+```
+Top
+ ↓
+10
+```
+
+Execute
+
+```
+isEmpty()
+```
+
+Returns
+
+```
+false
+```
+
+---
+
+Push
+
+```java
+push(20)
+```
+
+```
+Top
+ ↓
+20
+10
+```
+
+Execute
+
+```
+isEmpty()
+```
+
+Returns
+
+```
+false
+```
+
+---
+
+Pop both elements
+
+```
+Top
+ ↓
+-----
+```
+
+Execute
+
+```
+isEmpty()
+```
+
+Returns
+
+```
+true
+```
+
+---
+
+# 14. Interview Questions Related to isEmpty()
+
+1. What does `isEmpty()` do?
+2. What is the return type of `isEmpty()`?
+3. What is the time complexity of `isEmpty()`?
+4. How is `isEmpty()` implemented using an array?
+5. How is `isEmpty()` implemented using a linked list?
+6. Why should we use `isEmpty()` before calling `pop()`?
+7. What happens if `pop()` is called on an empty stack?
+
+---
+
+# 15. One Analogy to Remember Everything
+
+Imagine your school bag.
+
+### Empty Bag
+
+```
+Bag
+
+(Empty)
+```
+
+You ask:
+
+**"Is my bag empty?"**
+
+Answer:
+
+```
+Yes (true)
+```
+
+---
+
+Now put books inside.
+
+```
+Bag
+
+Java
+DSA
+Python
+```
+
+Ask again:
+
+**"Is my bag empty?"**
+
+Answer:
+
+```
+No (false)
+```
+
+You are **not removing** or **adding** books.
+
+You are simply checking whether the bag has anything inside.
+
+That is exactly what **isEmpty()** does.
+
+---
+
+# ⭐ Quick Revision (30 Seconds)
+
+* **isEmpty() = Checks whether the stack has any elements.**
+* Returns **true** if the stack is empty.
+* Returns **false** if the stack has one or more elements.
+* It **does not add or remove** elements.
+* Return type = **boolean**.
+* Time Complexity = **O(1)**.
+* Array implementation checks `top == -1`.
+* Linked List implementation checks `head == null`.
+* Always use `isEmpty()` before `pop()` or `peek()` to avoid errors.
+
+### 🧠 Memory Trick
+
+**isEmpty() = "Is there anything inside?" 📦**
+
+Think of checking whether a box or school bag is empty. You only **look** to see if anything is inside—you don't add or remove anything. That's exactly what `isEmpty()` does.
