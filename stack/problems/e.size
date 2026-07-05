@@ -1,0 +1,728 @@
+# size() Operation (Stack)
+
+## 1. What is size()?
+
+Imagine a stack of plates in a hotel.
+
+### Case 1
+
+```text
+Top
+ ↓
+Plate 4
+Plate 3
+Plate 2
+Plate 1
+```
+
+The hotel manager asks,
+
+**"How many plates are in the stack?"**
+
+You count them.
+
+Answer:
+
+✅ **4**
+
+You are **not removing** any plate.
+
+You are **not adding** any plate.
+
+You are only **counting** how many plates are present.
+
+This operation is called **size()**.
+
+---
+
+### Definition
+
+**size() is the operation used to find the total number of elements currently present in the stack.**
+
+It only counts the elements.
+
+It does **not** modify the stack.
+
+---
+
+# 2. Syntax in Java
+
+```java
+stack.size();
+```
+
+Example
+
+```java
+Stack<Integer> stack = new Stack<>();
+
+stack.push(10);
+stack.push(20);
+stack.push(30);
+
+System.out.println(stack.size());
+```
+
+---
+
+# 3. Visualization
+
+Initially
+
+```text
+Top
+ ↓
+-----
+```
+
+Execute
+
+```java
+stack.size();
+```
+
+Returns
+
+```text
+0
+```
+
+---
+
+After
+
+```java
+stack.push(10);
+```
+
+```text
+Top
+ ↓
+10
+```
+
+Execute
+
+```java
+stack.size();
+```
+
+Returns
+
+```text
+1
+```
+
+---
+
+After
+
+```java
+stack.push(20);
+stack.push(30);
+```
+
+```text
+Top
+ ↓
+30
+20
+10
+```
+
+Execute
+
+```java
+stack.size();
+```
+
+Returns
+
+```text
+3
+```
+
+---
+
+## Notice
+
+Whether the stack contains
+
+```text
+Top
+ ↓
+10
+```
+
+or
+
+```text
+Top
+ ↓
+50
+40
+30
+20
+10
+```
+
+`size()` always returns the **total number of elements**.
+
+---
+
+# 4. Step-by-Step Working
+
+Suppose the stack is
+
+```text
+Top
+ ↓
+30
+20
+10
+```
+
+Execute
+
+```java
+stack.size();
+```
+
+### Step 1
+
+Check how many elements are stored.
+
+```text
+10
+20
+30
+```
+
+---
+
+### Step 2
+
+Count them.
+
+```text
+1
+2
+3
+```
+
+---
+
+### Step 3
+
+Return
+
+```text
+3
+```
+
+The stack remains unchanged.
+
+---
+
+# 5. Example Program
+
+```java
+import java.util.Stack;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Stack<Integer> stack = new Stack<>();
+
+        System.out.println(stack.size());
+
+        stack.push(10);
+        stack.push(20);
+        stack.push(30);
+
+        System.out.println(stack.size());
+    }
+}
+```
+
+### Output
+
+```text
+0
+3
+```
+
+Explanation
+
+Initially
+
+```text
+Top
+ ↓
+-----
+```
+
+Size = **0**
+
+After pushing
+
+```text
+Top
+ ↓
+30
+20
+10
+```
+
+Size = **3**
+
+---
+
+# 6. What Does size() Return?
+
+`size()` returns an **integer (int)**.
+
+It tells how many elements are currently inside the stack.
+
+Example
+
+```java
+Stack<Integer> stack = new Stack<>();
+
+stack.push(50);
+stack.push(60);
+
+int count = stack.size();
+
+System.out.println(count);
+```
+
+Output
+
+```text
+2
+```
+
+---
+
+# 7. Time Complexity
+
+| Operation | Time Complexity |
+| --------- | --------------- |
+| size()    | **O(1)**        |
+
+### Why?
+
+Java keeps track of the current number of elements.
+
+It simply returns that value.
+
+No searching.
+
+No counting one by one.
+
+No traversal.
+
+Therefore,
+
+```text
+Time Complexity = O(1)
+```
+
+---
+
+# 8. What Happens Internally?
+
+Suppose
+
+```text
+Index
+
+0   1   2
+-----------
+10 20 30
+
+top = 2
+```
+
+Internally,
+
+Java stores
+
+```text
+size = 3
+```
+
+Execute
+
+```java
+stack.size();
+```
+
+Java simply returns
+
+```text
+3
+```
+
+No loop is executed.
+
+---
+
+# 9. size() in Array Implementation
+
+Initially
+
+```text
+Index
+
+0   1   2   3   4
+------------------
+
+top = -1
+```
+
+Size is calculated as
+
+```text
+top + 1
+
+-1 + 1 = 0
+```
+
+---
+
+After
+
+```text
+Index
+
+0   1   2
+----------
+10 20 30
+
+top = 2
+```
+
+Size becomes
+
+```text
+top + 1
+
+2 + 1 = 3
+```
+
+Example implementation
+
+```java
+public int size()
+{
+    return top + 1;
+}
+```
+
+---
+
+# 10. size() in Linked List Implementation
+
+Suppose
+
+```text
+Head (Top)
+
+↓
+
+30 → 20 → 10 → null
+```
+
+Usually, a linked-list stack maintains a variable
+
+```text
+count = 3
+```
+
+Whenever
+
+```text
+push()
+```
+
+is called,
+
+```text
+count++
+```
+
+Whenever
+
+```text
+pop()
+```
+
+is called,
+
+```text
+count--
+```
+
+Then
+
+```java
+public int size()
+{
+    return count;
+}
+```
+
+This makes `size()` run in **O(1)** time.
+
+---
+
+# 11. Why is size() Important?
+
+Sometimes we need to know how many elements are present before performing operations.
+
+Example
+
+```java
+if(stack.size() >= 2)
+{
+    System.out.println("Stack has at least two elements.");
+}
+else
+{
+    System.out.println("Not enough elements.");
+}
+```
+
+---
+
+Another Example
+
+```java
+while(stack.size() > 0)
+{
+    System.out.println(stack.pop());
+}
+```
+
+The loop continues until the stack becomes empty.
+
+---
+
+# 12. Safe Way to Use size()
+
+Instead of assuming the stack has elements,
+
+check
+
+```java
+if(stack.size() > 0)
+{
+    System.out.println(stack.peek());
+}
+else
+{
+    System.out.println("Stack is empty.");
+}
+```
+
+---
+
+# 13. Dry Run
+
+Initially
+
+```text
+Top
+ ↓
+-----
+```
+
+Execute
+
+```java
+size()
+```
+
+Returns
+
+```text
+0
+```
+
+---
+
+Push
+
+```java
+push(10)
+```
+
+```text
+Top
+ ↓
+10
+```
+
+Execute
+
+```java
+size()
+```
+
+Returns
+
+```text
+1
+```
+
+---
+
+Push
+
+```java
+push(20)
+```
+
+```text
+Top
+ ↓
+20
+10
+```
+
+Execute
+
+```java
+size()
+```
+
+Returns
+
+```text
+2
+```
+
+---
+
+Push
+
+```java
+push(30)
+```
+
+```text
+Top
+ ↓
+30
+20
+10
+```
+
+Execute
+
+```java
+size()
+```
+
+Returns
+
+```text
+3
+```
+
+---
+
+Pop
+
+```java
+pop()
+```
+
+```text
+Top
+ ↓
+20
+10
+```
+
+Execute
+
+```java
+size()
+```
+
+Returns
+
+```text
+2
+```
+
+---
+
+# 14. Interview Questions Related to size()
+
+1. What does `size()` do?
+2. What is the return type of `size()`?
+3. What is the time complexity of `size()`?
+4. Does `size()` remove any element?
+5. How is `size()` implemented using an array?
+6. How is `size()` implemented using a linked list?
+7. What value does `size()` return for an empty stack?
+
+---
+
+# 15. One Analogy to Remember Everything
+
+Imagine your school bag.
+
+```text
+Bag
+
+↓
+
+Math Book
+Science Book
+Java Book
+DSA Book
+```
+
+Your friend asks,
+
+**"How many books are in your bag?"**
+
+You count them.
+
+```text
+4 Books
+```
+
+You don't remove any book.
+
+You don't add any book.
+
+You simply count them.
+
+That is exactly what **size()** does.
+
+---
+
+# ⭐ Quick Revision (30 Seconds)
+
+* **size() = Returns the total number of elements in the stack.**
+* It **does not add or remove** elements.
+* Return type = **int**.
+* Empty stack → `size()` returns **0**.
+* After every `push()`, size increases by **1**.
+* After every `pop()`, size decreases by **1**.
+* Time Complexity = **O(1)**.
+* Array implementation usually returns **top + 1**.
+* Linked List implementation usually returns a maintained **count** variable.
+
+## 🧠 Memory Trick
+
+**size() = "How many?" 🔢**
+
+Think of counting the number of books in your school bag or the number of plates in a stack. You only **count** them—you don't add or remove anything. That's exactly what `size()` does.
