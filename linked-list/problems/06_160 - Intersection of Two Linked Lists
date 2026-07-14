@@ -1,0 +1,414 @@
+# **160. Intersection of Two Linked Lists**
+
+---
+
+# **1. Understand the Problem**
+
+We are given:
+
+* The heads of **two singly linked lists**:
+
+  * `headA`
+  * `headB`
+
+We need to return:
+
+* The **node where the two linked lists intersect**.
+* If they do not intersect, return `null`.
+
+> **Important:** Two linked lists intersect only if they share the **same node (same memory address)**, **not** just the same value.
+
+---
+
+### Example 1
+
+```text
+List A
+
+4 → 1
+      \
+       8 → 4 → 5
+      /
+5 → 6 → 1
+
+List B
+```
+
+Output
+
+```text
+Node with value 8
+```
+
+Both lists share the node containing **8** and everything after it.
+
+---
+
+### Example 2
+
+```text
+List A
+
+1 → 9 → 1
+         \
+          2 → 4
+         /
+3
+```
+
+Output
+
+```text
+Node with value 2
+```
+
+---
+
+### Example 3
+
+```text
+List A
+
+2 → 6 → 4
+
+List B
+
+1 → 5
+```
+
+Output
+
+```text
+null
+```
+
+The two lists never meet.
+
+---
+
+# **2. The Tricky Part**
+
+A brute-force solution is:
+
+For every node in List A,
+
+Traverse the entire List B.
+
+If both nodes are the same object,
+
+Return that node.
+
+Example
+
+```text
+A : 4 → 1 → 8 → 4 → 5
+
+B : 5 → 6 → 1 → 8 → 4 → 5
+```
+
+Compare:
+
+```text
+4 with every node
+
+1 with every node
+
+8 with every node
+```
+
+Eventually,
+
+We find the common node.
+
+But this takes
+
+**O(m × n)**
+
+Too slow.
+
+---
+
+# **3. Key Observation**
+
+Suppose
+
+```text
+List A
+
+4 → 1 → 8 → 4 → 5
+
+Length = 5
+```
+
+```text
+List B
+
+5 → 6 → 1 → 8 → 4 → 5
+
+Length = 6
+```
+
+The lists have different lengths.
+
+So the pointers don't reach the intersection at the same time.
+
+Instead,
+
+When pointer A reaches the end,
+
+Start it from **headB**.
+
+When pointer B reaches the end,
+
+Start it from **headA**.
+
+Eventually,
+
+Both pointers travel exactly
+
+```text
+Length(A) + Length(B)
+```
+
+So they become aligned.
+
+If an intersection exists,
+
+They will meet there.
+
+If no intersection exists,
+
+Both become `null` together.
+
+---
+
+### Picture
+
+Initially
+
+```text
+A
+
+4 → 1 → 8 → 4 → 5
+
+B
+
+5 → 6 → 1 → 8 → 4 → 5
+```
+
+After A finishes
+
+```text
+A starts from headB
+```
+
+After B finishes
+
+```text
+B starts from headA
+```
+
+Now both have traveled equal distances.
+
+They meet at
+
+```text
+8
+```
+
+---
+
+# **4. Algorithm**
+
+1. Create two pointers:
+
+   * `pA = headA`
+   * `pB = headB`
+2. While `pA != pB`
+
+   * If `pA == null`
+
+     * move it to `headB`
+   * Else
+
+     * move to `pA.next`
+   * If `pB == null`
+
+     * move it to `headA`
+   * Else
+
+     * move to `pB.next`
+3. Return `pA`.
+
+---
+
+# **5. Dry Run**
+
+Input
+
+```text
+List A
+
+4 → 1 → 8 → 4 → 5
+
+List B
+
+5 → 6 → 1 → 8 → 4 → 5
+```
+
+---
+
+### Step 1
+
+```text
+pA = 4
+
+pB = 5
+```
+
+Not equal.
+
+---
+
+### Step 2
+
+```text
+pA = 1
+
+pB = 6
+```
+
+---
+
+### Step 3
+
+```text
+pA = 8
+
+pB = 1
+```
+
+---
+
+### Continue...
+
+Pointer A reaches end first.
+
+It starts again from List B.
+
+Pointer B reaches end.
+
+It starts again from List A.
+
+Eventually
+
+```text
+pA = 8
+
+pB = 8
+```
+
+They point to the **same node**.
+
+Return that node.
+
+---
+
+# **6. Why does this work?**
+
+Suppose
+
+```text
+Length(A) = m
+
+Length(B) = n
+```
+
+Pointer A travels
+
+```text
+A + B
+```
+
+Pointer B travels
+
+```text
+B + A
+```
+
+Both travel
+
+```text
+m + n
+```
+
+Therefore,
+
+The difference in lengths disappears.
+
+If an intersection exists,
+
+Both pointers arrive there together.
+
+If not,
+
+Both reach `null` at the same time.
+
+---
+
+# **7. Java Code**
+
+```java
+public class Solution {
+
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+
+        ListNode pA = headA;
+        ListNode pB = headB;
+
+        while (pA != pB) {
+
+            pA = (pA == null) ? headB : pA.next;
+            pB = (pB == null) ? headA : pB.next;
+        }
+
+        return pA;
+    }
+}
+```
+
+---
+
+# **8. Time Complexity**
+
+**O(m + n)**
+
+Each pointer traverses each list at most once.
+
+---
+
+# **9. Space Complexity**
+
+**O(1)**
+
+Only two pointers are used.
+
+No extra memory.
+
+---
+
+# **10. Important Interview Note**
+
+This solution does **not** compare node values.
+
+It compares the **node references (memory addresses)**.
+
+Even if two nodes have the same value, they are **not** considered an intersection unless they are the **exact same node object**.
+
+The pointer-switching technique automatically aligns both pointers without calculating the lengths of the lists.
+
+---
+
+# **11. One-line Note for Interviews**
+
+**Use two pointers that traverse both lists. When a pointer reaches the end of one list, redirect it to the head of the other list. They will either meet at the intersection node or both become `null`.** 🚀
