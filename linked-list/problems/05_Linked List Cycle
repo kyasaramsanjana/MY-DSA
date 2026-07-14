@@ -1,0 +1,377 @@
+# **141. Linked List Cycle**
+
+---
+
+# **1. Understand the Problem**
+
+We are given:
+
+* The **head** of a singly linked list.
+* We need to determine whether the linked list contains a **cycle**.
+
+A cycle means that while traversing the list, we eventually come back to a previously visited node instead of reaching `null`.
+
+Return:
+
+* `true` → if a cycle exists.
+* `false` → otherwise.
+
+---
+
+### Example 1
+
+```
+Input
+
+3 → 2 → 0 → -4
+    ↑         |
+    |_________|
+
+Output
+
+true
+```
+
+The last node points back to the node with value `2`.
+
+---
+
+### Example 2
+
+```
+Input
+
+1 → 2
+↑   |
+|___|
+
+Output
+
+true
+```
+
+The second node points back to the first node.
+
+---
+
+### Example 3
+
+```
+Input
+
+1 → null
+
+Output
+
+false
+```
+
+There is no cycle.
+
+---
+
+# **2. The Tricky Part**
+
+A straightforward solution is:
+
+* Visit every node.
+* Store each node inside a HashSet.
+* If we ever visit the same node again, a cycle exists.
+
+Example
+
+```
+1 → 2 → 3
+    ↑   |
+    |___|
+```
+
+Visited:
+
+```
+1
+1,2
+1,2,3
+```
+
+Next node is **2** again.
+
+Already visited.
+
+Cycle found.
+
+Although this works, it uses **extra memory O(n)**.
+
+Can we solve it using **O(1) space?**
+
+Yes!
+
+---
+
+# **3. Key Observation (Floyd's Cycle Detection Algorithm)**
+
+Imagine two runners on a circular track.
+
+* One runner moves **1 step at a time** (Slow).
+* Another runner moves **2 steps at a time** (Fast).
+
+If there is a loop,
+
+Eventually, the faster runner will catch the slower runner.
+
+Exactly the same idea works for linked lists.
+
+---
+
+Initialize:
+
+```
+slow = head
+fast = head
+```
+
+Move:
+
+```
+slow = slow.next
+fast = fast.next.next
+```
+
+---
+
+### If there is NO cycle
+
+```
+1 → 2 → 3 → 4 → null
+
+slow: moves 1 step
+fast: moves 2 steps
+
+Eventually fast reaches null.
+```
+
+No cycle.
+
+---
+
+### If there IS a cycle
+
+```
+1 → 2 → 3 → 4
+     ↑       |
+     |_______|
+```
+
+Movement
+
+```
+Step 0
+
+S,F
+1
+
+Step 1
+
+S
+2
+
+      F
+3
+
+Step 2
+
+      S
+3
+
+F
+2
+
+Step 3
+
+        S,F
+4
+```
+
+Both pointers meet.
+
+Cycle exists.
+
+---
+
+# **4. Algorithm**
+
+1. Initialize `slow = head`.
+2. Initialize `fast = head`.
+3. While `fast` and `fast.next` are not null:
+
+   * Move `slow` one step.
+   * Move `fast` two steps.
+   * If `slow == fast`
+
+     * return `true`.
+4. If loop ends,
+
+   * return `false`.
+
+---
+
+# **5. Dry Run**
+
+### Input
+
+```
+3 → 2 → 0 → -4
+    ↑       |
+    |_______|
+```
+
+---
+
+### Initial
+
+```
+slow = 3
+fast = 3
+```
+
+---
+
+### Iteration 1
+
+```
+slow = 2
+fast = 0
+```
+
+```
+3 → 2(S) → 0(F) → -4
+        ↑         |
+        |_________|
+```
+
+Not equal.
+
+---
+
+### Iteration 2
+
+```
+slow = 0
+fast = 2
+```
+
+```
+3 → 2(F) → 0(S) → -4
+        ↑          |
+        |__________|
+```
+
+Not equal.
+
+---
+
+### Iteration 3
+
+```
+slow = -4
+fast = -4
+```
+
+```
+3 → 2 → 0 → -4(S,F)
+     ↑          |
+     |__________|
+```
+
+Both meet.
+
+Return **true**.
+
+---
+
+# **6. Why does this work?**
+
+If there is **no cycle**:
+
+The fast pointer eventually reaches `null`.
+
+```
+1 → 2 → 3 → null
+
+Fast finishes first.
+```
+
+---
+
+If there **is a cycle**:
+
+The fast pointer moves one extra step every iteration compared to the slow pointer.
+
+Eventually, that extra speed closes the gap.
+
+They must meet inside the cycle.
+
+This is exactly like two runners on a circular track.
+
+---
+
+# **7. Java Code**
+
+```java
+class Solution {
+
+    public boolean hasCycle(ListNode head) {
+
+        ListNode slow = head;
+        ListNode fast = head;
+
+        while (fast != null && fast.next != null) {
+
+            slow = slow.next;
+            fast = fast.next.next;
+
+            if (slow == fast)
+                return true;
+        }
+
+        return false;
+    }
+}
+```
+
+---
+
+# **8. Time Complexity**
+
+**O(n)**
+
+Each pointer traverses the list at most once.
+
+---
+
+# **9. Space Complexity**
+
+**O(1)**
+
+Only two pointers are used.
+
+No extra memory is required.
+
+---
+
+# **10. Important Interview Note**
+
+This problem is a classic application of **Floyd's Cycle Detection Algorithm**, also known as the **Tortoise and Hare Algorithm**.
+
+The key insight is:
+
+* If a cycle exists, the fast pointer will eventually catch the slow pointer.
+* If no cycle exists, the fast pointer reaches `null`.
+
+This achieves **O(n)** time with **O(1)** extra space, which is better than using a HashSet (`O(n)` space).
+
+---
+
+# **11. One-line Note for Interviews**
+
+**Use two pointers—slow moves one step, fast moves two steps. If they ever meet, a cycle exists; if the fast pointer reaches `null`, there is no cycle.** 🚀
