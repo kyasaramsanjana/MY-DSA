@@ -1,0 +1,449 @@
+# **21. Merge Two Sorted Lists**
+
+---
+
+# **1. Understand the Problem**
+
+We are given:
+
+* Two **sorted** singly linked lists:
+
+  * `list1`
+  * `list2`
+
+We need to merge them into **one sorted linked list** and return its head.
+
+The merged list should contain **all the nodes** from both lists.
+
+---
+
+### Example 1
+
+```text
+Input
+
+list1
+
+1 → 2 → 4
+
+list2
+
+1 → 3 → 4
+```
+
+Output
+
+```text
+1 → 1 → 2 → 3 → 4 → 4
+```
+
+---
+
+### Example 2
+
+```text
+Input
+
+list1 = null
+
+list2 = null
+```
+
+Output
+
+```text
+null
+```
+
+---
+
+### Example 3
+
+```text
+Input
+
+list1 = null
+
+list2
+
+0
+```
+
+Output
+
+```text
+0
+```
+
+---
+
+# **2. The Tricky Part**
+
+A common mistake is to:
+
+* Create a new list.
+* Copy every value into new nodes.
+
+Although this works, it uses **extra memory**.
+
+Instead,
+
+We can **reuse the existing nodes** by simply changing their `next` pointers.
+
+---
+
+# **3. Key Observation**
+
+Both lists are already **sorted**.
+
+So at every step,
+
+Compare the current nodes.
+
+* If `list1.val <= list2.val`
+
+  * Take the node from `list1`.
+* Otherwise
+
+  * Take the node from `list2`.
+
+Attach the smaller node to the merged list.
+
+Move that list's pointer forward.
+
+Repeat until one list becomes empty.
+
+Finally,
+
+Attach the remaining nodes.
+
+---
+
+### Picture
+
+Initially
+
+```text
+list1
+
+1 → 2 → 4
+
+list2
+
+1 → 3 → 4
+```
+
+Create a dummy node
+
+```text
+dummy
+
+↓
+
+0
+```
+
+---
+
+Compare
+
+```text
+1 vs 1
+```
+
+Take first `1`
+
+```text
+0 → 1
+```
+
+Move `list1`.
+
+---
+
+Compare
+
+```text
+2 vs 1
+```
+
+Take second `1`
+
+```text
+0 → 1 → 1
+```
+
+Move `list2`.
+
+---
+
+Compare
+
+```text
+2 vs 3
+```
+
+Take `2`
+
+```text
+0 → 1 → 1 → 2
+```
+
+Continue until finished.
+
+---
+
+Final
+
+```text
+1 → 1 → 2 → 3 → 4 → 4
+```
+
+---
+
+# **4. Algorithm**
+
+1. Create a dummy node.
+2. Create a pointer `tail = dummy`.
+3. While both lists are not empty:
+
+   * Compare `list1.val` and `list2.val`.
+   * Attach the smaller node to `tail.next`.
+   * Move that list's pointer.
+   * Move `tail`.
+4. If `list1` still has nodes,
+
+   * Attach them.
+5. If `list2` still has nodes,
+
+   * Attach them.
+6. Return `dummy.next`.
+
+---
+
+# **5. Dry Run**
+
+### Input
+
+```text
+list1
+
+1 → 2 → 4
+
+list2
+
+1 → 3 → 4
+```
+
+---
+
+### Initial
+
+```text
+dummy
+
+↓
+
+0
+
+tail = dummy
+```
+
+---
+
+### Step 1
+
+Compare
+
+```text
+1 and 1
+```
+
+Take first `1`.
+
+```text
+0 → 1
+```
+
+Move
+
+```text
+list1 → 2
+tail → 1
+```
+
+---
+
+### Step 2
+
+Compare
+
+```text
+2 and 1
+```
+
+Take second `1`.
+
+```text
+0 → 1 → 1
+```
+
+Move
+
+```text
+list2 → 3
+tail → second 1
+```
+
+---
+
+### Step 3
+
+Compare
+
+```text
+2 and 3
+```
+
+Take `2`.
+
+```text
+0 → 1 → 1 → 2
+```
+
+Move `list1`.
+
+---
+
+### Step 4
+
+Compare
+
+```text
+4 and 3
+```
+
+Take `3`.
+
+```text
+0 → 1 → 1 → 2 → 3
+```
+
+Move `list2`.
+
+---
+
+### Step 5
+
+Compare
+
+```text
+4 and 4
+```
+
+Take first `4`.
+
+```text
+0 → 1 → 1 → 2 → 3 → 4
+```
+
+Move `list1`.
+
+Now `list1 = null`.
+
+Attach remaining nodes from `list2`.
+
+Final
+
+```text
+1 → 1 → 2 → 3 → 4 → 4
+```
+
+---
+
+# **6. Why does this work?**
+
+Since both lists are already sorted,
+
+The smallest remaining element is always at the front of either `list1` or `list2`.
+
+By always choosing the smaller front node,
+
+The merged list remains sorted.
+
+When one list finishes,
+
+The remaining nodes in the other list are already sorted,
+
+So we can attach them directly.
+
+---
+
+# **7. Java Code**
+
+```java
+class Solution {
+
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+
+        ListNode dummy = new ListNode(-1);
+        ListNode tail = dummy;
+
+        while (list1 != null && list2 != null) {
+
+            if (list1.val <= list2.val) {
+                tail.next = list1;
+                list1 = list1.next;
+            } else {
+                tail.next = list2;
+                list2 = list2.next;
+            }
+
+            tail = tail.next;
+        }
+
+        if (list1 != null)
+            tail.next = list1;
+
+        if (list2 != null)
+            tail.next = list2;
+
+        return dummy.next;
+    }
+}
+```
+
+---
+
+# **8. Time Complexity**
+
+**O(m + n)**
+
+* `m` = number of nodes in `list1`
+* `n` = number of nodes in `list2`
+
+Each node is visited exactly once.
+
+---
+
+# **9. Space Complexity**
+
+**O(1)**
+
+No extra list is created.
+
+We only use a dummy node and a few pointers.
+
+---
+
+# **10. Important Interview Note**
+
+The **dummy node** is a common linked list technique that simplifies handling the head of the merged list. It avoids special cases for the first node.
+
+Also, this solution **reuses the existing nodes** instead of creating new ones, making it both time-efficient and space-efficient.
+
+---
+
+# **11. One-line Note for Interviews**
+
+**Use a dummy node and compare the front nodes of both sorted lists. Attach the smaller node each time, then append the remaining nodes after one list becomes empty.** 🚀
