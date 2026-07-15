@@ -9,9 +9,6 @@ We are given:
 We must **return the middle node**.
 
 If there are **2 middle nodes**, return the **second middle node**.
-
----
-
 ## Example 1
 
 Input
