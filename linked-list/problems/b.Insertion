@@ -4,10 +4,6 @@ Suppose we have:
 
 ```text
 10 → 20 → 30 → null
-```
-
----
-
 # 1. Insert at Beginning
 
 ### Example
