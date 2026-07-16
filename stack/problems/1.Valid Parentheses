@@ -1,0 +1,460 @@
+# **20. Valid Parentheses**
+
+---
+
+# **1. Understand the Problem**
+
+We are given:
+
+* A string `s` containing only the characters:
+
+  * `'('`, `')'`
+  * `'{'`, `'}'`
+  * `'['`, `']'`
+
+We need to determine whether the parentheses are **valid**.
+
+A string is valid if:
+
+1. Every opening bracket has a matching closing bracket.
+2. The brackets are closed in the correct order.
+3. Every closing bracket matches the most recent unmatched opening bracket.
+
+Return:
+
+* `true` → if the string is valid.
+* `false` → otherwise.
+
+---
+
+### Example 1
+
+```text
+Input
+
+s = "()"
+```
+
+Output
+
+```text
+true
+```
+
+---
+
+### Example 2
+
+```text
+Input
+
+s = "()[]{}"
+```
+
+Output
+
+```text
+true
+```
+
+---
+
+### Example 3
+
+```text
+Input
+
+s = "(]"
+```
+
+Output
+
+```text
+false
+```
+
+`(` cannot be closed with `]`.
+
+---
+
+### Example 4
+
+```text
+Input
+
+s = "([)]"
+```
+
+Output
+
+```text
+false
+```
+
+The brackets are not closed in the correct order.
+
+---
+
+### Example 5
+
+```text
+Input
+
+s = "{[]}"
+```
+
+Output
+
+```text
+true
+```
+
+---
+
+# **2. The Tricky Part**
+
+A common mistake is to simply count the number of opening and closing brackets.
+
+Example
+
+```text
+Input
+
+([)]
+```
+
+Count
+
+```text
+Opening brackets = 2
+Closing brackets = 2
+```
+
+The counts are equal, but the string is **not valid** because the order is wrong.
+
+So counting brackets is **not enough**.
+
+We need to remember **which opening bracket came last**.
+
+---
+
+# **3. Key Observation**
+
+The **last opening bracket** must be closed **first**.
+
+This is exactly how a **Stack (LIFO - Last In, First Out)** works.
+
+* When we see an opening bracket:
+
+  * Push it onto the stack.
+* When we see a closing bracket:
+
+  * The top of the stack must contain the matching opening bracket.
+  * If not, return `false`.
+
+---
+
+### Picture
+
+Input
+
+```text
+{ [ ( ) ] }
+```
+
+Initially
+
+```text
+Stack
+
+Empty
+```
+
+Read `{`
+
+```text
+Stack
+
+{
+```
+
+Read `[`
+
+```text
+Stack
+
+[
+{
+```
+
+Read `(`
+
+```text
+Stack
+
+(
+[
+{
+```
+
+Read `)`
+
+Pop `(`
+
+```text
+Stack
+
+[
+{
+```
+
+Read `]`
+
+Pop `[`.
+
+```text
+Stack
+
+{
+```
+
+Read `}`
+
+Pop `{`.
+
+```text
+Stack
+
+Empty
+```
+
+Stack becomes empty.
+
+Valid.
+
+---
+
+# **4. Algorithm**
+
+1. Create an empty stack.
+2. Traverse each character in the string.
+3. If it is an opening bracket:
+
+   * Push it onto the stack.
+4. Otherwise (closing bracket):
+
+   * If the stack is empty, return `false`.
+   * Pop the top element.
+   * Check whether it matches the current closing bracket.
+   * If it doesn't match, return `false`.
+5. After processing all characters:
+
+   * If the stack is empty, return `true`.
+   * Otherwise, return `false`.
+
+---
+
+# **5. Dry Run**
+
+### Input
+
+```text
+s = "{[]}"
+```
+
+---
+
+### Step 1
+
+Read `{`
+
+```text
+Stack
+
+{
+```
+
+---
+
+### Step 2
+
+Read `[`
+
+```text
+Stack
+
+[
+{
+```
+
+---
+
+### Step 3
+
+Read `]`
+
+Top is `[`.
+
+Matches.
+
+Pop.
+
+```text
+Stack
+
+{
+```
+
+---
+
+### Step 4
+
+Read `}`
+
+Top is `{`.
+
+Matches.
+
+Pop.
+
+```text
+Stack
+
+Empty
+```
+
+---
+
+Finished.
+
+Return
+
+```text
+true
+```
+
+---
+
+### Another Dry Run
+
+Input
+
+```text
+([)]
+```
+
+Read `(`
+
+```text
+Stack
+
+(
+```
+
+Read `[`
+
+```text
+Stack
+
+[
+(
+```
+
+Read `)`
+
+Top is `[`.
+
+But `)` needs `(`.
+
+Mismatch.
+
+Return
+
+```text
+false
+```
+
+---
+
+# **6. Why does this work?**
+
+The most recently opened bracket must always be closed first.
+
+A **Stack** follows exactly this behavior:
+
+* **Push** every opening bracket.
+* **Pop** when a matching closing bracket is found.
+
+If a mismatch occurs or the stack is empty when a closing bracket appears, the string is invalid.
+
+If the stack is empty at the end, every opening bracket has been matched correctly.
+
+---
+
+# **7. Java Code**
+
+```java
+class Solution {
+
+    public boolean isValid(String s) {
+
+        Stack<Character> stack = new Stack<>();
+
+        for (char ch : s.toCharArray()) {
+
+            if (ch == '(' || ch == '{' || ch == '[') {
+                stack.push(ch);
+            } else {
+
+                if (stack.isEmpty())
+                    return false;
+
+                char top = stack.pop();
+
+                if ((ch == ')' && top != '(') ||
+                    (ch == '}' && top != '{') ||
+                    (ch == ']' && top != '['))
+                    return false;
+            }
+        }
+
+        return stack.isEmpty();
+    }
+}
+```
+
+---
+
+# **8. Time Complexity**
+
+**O(n)**
+
+* `n` = length of the string.
+* Each character is pushed and popped at most once.
+
+---
+
+# **9. Space Complexity**
+
+**O(n)**
+
+In the worst case (all opening brackets), all characters are stored in the stack.
+
+---
+
+# **10. Important Interview Note**
+
+A **Stack** is the ideal data structure for problems involving **matching pairs** and **nested structures**.
+
+Remember:
+
+* Opening brackets → **Push**
+* Closing brackets → **Pop and Compare**
+
+Also, always check if the stack is empty before popping to avoid errors.
+
+---
+
+# **11. One-line Note for Interviews**
+
+**Use a stack to store opening brackets. For every closing bracket, pop the top element and check if it matches. If all brackets match and the stack is empty at the end, the string is valid.** 🚀
