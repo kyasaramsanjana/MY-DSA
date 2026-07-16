@@ -1,0 +1,500 @@
+# **155. Min Stack**
+
+---
+
+# **1. Understand the Problem**
+
+We need to design a stack that supports the following operations:
+
+* `push(val)` → Push an element onto the stack.
+* `pop()` → Remove the top element.
+* `top()` → Return the top element.
+* `getMin()` → Return the **minimum element** in the stack.
+
+**All operations must run in O(1) time.**
+
+---
+
+### Example
+
+```text
+Input
+
+push(-2)
+push(0)
+push(-3)
+
+getMin()
+
+pop()
+
+top()
+
+getMin()
+```
+
+Output
+
+```text
+-3
+
+0
+
+-2
+```
+
+---
+
+# **2. The Tricky Part**
+
+A simple idea is:
+
+Whenever `getMin()` is called,
+
+Traverse the entire stack to find the minimum.
+
+Example
+
+```text
+Stack
+
+5
+2
+7
+1
+```
+
+Finding the minimum requires checking every element.
+
+Time Complexity:
+
+```text
+O(n)
+```
+
+But the problem requires
+
+```text
+O(1)
+```
+
+So this approach is too slow.
+
+---
+
+# **3. Key Observation**
+
+Whenever we push an element,
+
+We should also remember **the minimum value up to that point**.
+
+We use **two stacks**:
+
+* **Main Stack** → Stores all elements.
+* **Min Stack** → Stores the minimum element corresponding to each position.
+
+---
+
+### Picture
+
+Initially
+
+```text
+Main Stack
+
+Empty
+
+Min Stack
+
+Empty
+```
+
+---
+
+Push **5**
+
+```text
+Main Stack
+
+5
+
+Min Stack
+
+5
+```
+
+Minimum is 5.
+
+---
+
+Push **2**
+
+Compare
+
+```text
+min(2,5)=2
+```
+
+```text
+Main Stack
+
+2
+5
+
+Min Stack
+
+2
+5
+```
+
+---
+
+Push **7**
+
+Compare
+
+```text
+min(7,2)=2
+```
+
+```text
+Main Stack
+
+7
+2
+5
+
+Min Stack
+
+2
+2
+5
+```
+
+Notice
+
+Minimum is still **2**.
+
+---
+
+Push **1**
+
+Compare
+
+```text
+min(1,2)=1
+```
+
+```text
+Main Stack
+
+1
+7
+2
+5
+
+Min Stack
+
+1
+2
+2
+5
+```
+
+Now minimum becomes **1**.
+
+---
+
+If we pop
+
+```text
+Main Stack
+
+7
+2
+5
+
+Min Stack
+
+2
+2
+5
+```
+
+Minimum automatically becomes **2**.
+
+---
+
+# **4. Algorithm**
+
+### push(val)
+
+* Push `val` into the main stack.
+* If the min stack is empty:
+
+  * Push `val`.
+* Otherwise:
+
+  * Push `min(val, currentMin)` into the min stack.
+
+---
+
+### pop()
+
+* Pop from the main stack.
+* Pop from the min stack.
+
+---
+
+### top()
+
+* Return the top of the main stack.
+
+---
+
+### getMin()
+
+* Return the top of the min stack.
+
+---
+
+# **5. Dry Run**
+
+### Operations
+
+```text
+push(5)
+
+push(2)
+
+push(7)
+
+push(1)
+```
+
+---
+
+### Step 1
+
+```text
+Main
+
+5
+
+Min
+
+5
+```
+
+---
+
+### Step 2
+
+```text
+Main
+
+2
+5
+
+Min
+
+2
+5
+```
+
+---
+
+### Step 3
+
+```text
+Main
+
+7
+2
+5
+
+Min
+
+2
+2
+5
+```
+
+---
+
+### Step 4
+
+```text
+Main
+
+1
+7
+2
+5
+
+Min
+
+1
+2
+2
+5
+```
+
+---
+
+### getMin()
+
+Top of Min Stack
+
+```text
+1
+```
+
+Return
+
+```text
+1
+```
+
+---
+
+### pop()
+
+Remove
+
+```text
+1
+```
+
+Stacks become
+
+```text
+Main
+
+7
+2
+5
+
+Min
+
+2
+2
+5
+```
+
+---
+
+### getMin()
+
+Top of Min Stack
+
+```text
+2
+```
+
+Return
+
+```text
+2
+```
+
+---
+
+# **6. Why does this work?**
+
+The **Min Stack** always stores the minimum value corresponding to every position in the main stack.
+
+Whenever we push a new element:
+
+* If it is smaller than the current minimum, it becomes the new minimum.
+* Otherwise, we store the current minimum again.
+
+Whenever we pop:
+
+* Both stacks remove one element.
+* The previous minimum is automatically restored.
+
+Thus, `getMin()` simply returns the top of the Min Stack in **O(1)** time.
+
+---
+
+# **7. Java Code**
+
+```java
+class MinStack {
+
+    Stack<Integer> stack;
+    Stack<Integer> minStack;
+
+    public MinStack() {
+        stack = new Stack<>();
+        minStack = new Stack<>();
+    }
+
+    public void push(int val) {
+
+        stack.push(val);
+
+        if (minStack.isEmpty()) {
+            minStack.push(val);
+        } else {
+            minStack.push(Math.min(val, minStack.peek()));
+        }
+    }
+
+    public void pop() {
+        stack.pop();
+        minStack.pop();
+    }
+
+    public int top() {
+        return stack.peek();
+    }
+
+    public int getMin() {
+        return minStack.peek();
+    }
+}
+```
+
+---
+
+# **8. Time Complexity**
+
+| Operation | Time Complexity |
+| --------- | --------------- |
+| push()    | **O(1)**        |
+| pop()     | **O(1)**        |
+| top()     | **O(1)**        |
+| getMin()  | **O(1)**        |
+
+---
+
+# **9. Space Complexity**
+
+**O(n)**
+
+* `n` = number of elements in the stack.
+* We use two stacks, each storing `n` elements.
+
+---
+
+# **10. Important Interview Note**
+
+The trick is **not** to search for the minimum every time.
+
+Instead, **store the minimum so far** along with every push operation.
+
+The Min Stack mirrors the Main Stack:
+
+* Every push → push into both stacks.
+* Every pop → pop from both stacks.
+* `getMin()` becomes a simple `peek()` operation.
+
+This is a classic interview question that demonstrates how to trade **extra space** for **constant-time queries**.
+
+---
+
+# **11. One-line Note for Interviews**
+
+**Use two stacks—one for all elements and another for the minimum value at each level. The top of the Min Stack always gives the current minimum in O(1) time.** 🚀
