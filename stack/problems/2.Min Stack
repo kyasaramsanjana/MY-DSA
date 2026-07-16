@@ -1,7 +1,4 @@
 # **155. Min Stack**
-
----
-
 # **1. Understand the Problem**
 
 We need to design a stack that supports the following operations:
