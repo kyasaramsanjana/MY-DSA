@@ -1,0 +1,628 @@
+# **739. Daily Temperatures**
+
+---
+
+# **1. Understand the Problem**
+
+We are given:
+
+* An integer array `temperatures`.
+* `temperatures[i]` represents the temperature on the **i-th day**.
+
+For every day, we need to find:
+
+* **How many days must we wait until a warmer temperature occurs?**
+
+If there is **no warmer day in the future**, return **0** for that day.
+
+Return the answer as an array.
+
+---
+
+### Example 1
+
+```text
+Input
+
+temperatures = [73,74,75,71,69,72,76,73]
+```
+
+Output
+
+```text
+[1,1,4,2,1,1,0,0]
+```
+
+Explanation
+
+* 73 → warmer day (74) after **1 day**
+* 74 → warmer day (75) after **1 day**
+* 75 → warmer day (76) after **4 days**
+* 71 → warmer day (72) after **2 days**
+* 69 → warmer day (72) after **1 day**
+* 72 → warmer day (76) after **1 day**
+* 76 → no warmer day → **0**
+* 73 → no warmer day → **0**
+
+---
+
+### Example 2
+
+```text
+Input
+
+temperatures = [30,40,50,60]
+```
+
+Output
+
+```text
+[1,1,1,0]
+```
+
+---
+
+### Example 3
+
+```text
+Input
+
+temperatures = [30,60,90]
+```
+
+Output
+
+```text
+[1,1,0]
+```
+
+---
+
+# **2. The Tricky Part**
+
+A brute-force approach is:
+
+For every day,
+
+Keep checking future days until a warmer temperature is found.
+
+Example
+
+```text
+73 74 75 71 69 72 76 73
+↑
+```
+
+For **73**
+
+Check
+
+```text
+74 ✓
+```
+
+Answer = 1
+
+---
+
+For **75**
+
+Check
+
+```text
+71
+
+69
+
+72
+
+76 ✓
+```
+
+Answer = 4
+
+Doing this for every day results in
+
+```text
+O(n²)
+```
+
+Too slow.
+
+---
+
+# **3. Key Observation**
+
+Instead of searching repeatedly,
+
+We can use a **Monotonic Decreasing Stack**.
+
+The stack stores **indices** of days whose next warmer temperature has **not yet been found**.
+
+Whenever we encounter a warmer temperature,
+
+We resolve all previous colder days waiting in the stack.
+
+---
+
+### Picture
+
+Suppose
+
+```text
+temperatures
+
+73 74 75 71
+```
+
+Initially
+
+```text
+Stack
+
+Empty
+```
+
+(Stack stores **indices**.)
+
+---
+
+Day 0
+
+```text
+73
+```
+
+Push index
+
+```text
+Stack
+
+0
+```
+
+---
+
+Day 1
+
+```text
+74
+```
+
+Since
+
+```text
+74 > 73
+```
+
+Pop index **0**
+
+Answer
+
+```text
+1 - 0 = 1
+```
+
+Push index **1**
+
+```text
+Stack
+
+1
+```
+
+---
+
+Day 2
+
+```text
+75
+```
+
+Since
+
+```text
+75 > 74
+```
+
+Pop index **1**
+
+Answer
+
+```text
+2 - 1 = 1
+```
+
+Push
+
+```text
+Stack
+
+2
+```
+
+---
+
+Day 3
+
+```text
+71
+```
+
+```text
+71 < 75
+```
+
+Push index
+
+```text
+Stack
+
+3
+2
+```
+
+These days are still waiting for a warmer temperature.
+
+---
+
+# **4. Algorithm**
+
+1. Create:
+
+   * Answer array.
+   * Stack (stores indices).
+2. Traverse the temperature array.
+3. While the stack is not empty and the current temperature is greater than the temperature at the stack's top index:
+
+   * Pop the index.
+   * Calculate:
+
+     ```
+     currentIndex - poppedIndex
+     ```
+   * Store it in the answer array.
+4. Push the current index.
+5. Remaining indices in the stack have no warmer day.
+
+   * Their answer remains `0`.
+
+---
+
+# **5. Dry Run**
+
+### Input
+
+```text
+temperatures
+
+73 74 75 71 69 72 76 73
+```
+
+---
+
+### Day 0
+
+```text
+73
+```
+
+Push index
+
+```text
+Stack
+
+0
+```
+
+---
+
+### Day 1
+
+```text
+74
+```
+
+```text
+74 > 73
+```
+
+Pop
+
+```text
+Index 0
+```
+
+Answer
+
+```text
+1 - 0 = 1
+```
+
+Push
+
+```text
+Stack
+
+1
+```
+
+Answer
+
+```text
+[1,0,0,0,0,0,0,0]
+```
+
+---
+
+### Day 2
+
+```text
+75
+```
+
+```text
+75 > 74
+```
+
+Pop
+
+```text
+Index 1
+```
+
+Answer
+
+```text
+2 - 1 = 1
+```
+
+Push
+
+```text
+Stack
+
+2
+```
+
+Answer
+
+```text
+[1,1,0,0,0,0,0,0]
+```
+
+---
+
+### Day 3
+
+```text
+71
+```
+
+```text
+71 < 75
+```
+
+Push
+
+```text
+Stack
+
+3
+2
+```
+
+---
+
+### Day 4
+
+```text
+69
+```
+
+Push
+
+```text
+Stack
+
+4
+3
+2
+```
+
+---
+
+### Day 5
+
+```text
+72
+```
+
+```text
+72 > 69
+```
+
+Pop index 4
+
+```text
+5 - 4 = 1
+```
+
+```text
+72 > 71
+```
+
+Pop index 3
+
+```text
+5 - 3 = 2
+```
+
+Push index 5
+
+```text
+Stack
+
+5
+2
+```
+
+Answer
+
+```text
+[1,1,0,2,1,0,0,0]
+```
+
+---
+
+### Day 6
+
+```text
+76
+```
+
+Pop index 5
+
+```text
+6 - 5 = 1
+```
+
+Pop index 2
+
+```text
+6 - 2 = 4
+```
+
+Push index 6
+
+```text
+Stack
+
+6
+```
+
+Answer
+
+```text
+[1,1,4,2,1,1,0,0]
+```
+
+---
+
+### Day 7
+
+```text
+73
+```
+
+Push
+
+```text
+Stack
+
+7
+6
+```
+
+Traversal ends.
+
+Remaining indices
+
+```text
+6
+7
+```
+
+No warmer day.
+
+Their answers remain
+
+```text
+0
+```
+
+Final Answer
+
+```text
+[1,1,4,2,1,1,0,0]
+```
+
+---
+
+# **6. Why does this work?**
+
+The stack always stores indices of temperatures in **decreasing order**.
+
+When a warmer temperature appears,
+
+It is the **first warmer day** for every colder day waiting on the top of the stack.
+
+Each index is:
+
+* pushed once
+* popped once
+
+So the algorithm runs efficiently in **O(n)** time.
+
+---
+
+# **7. Java Code**
+
+```java
+class Solution {
+
+    public int[] dailyTemperatures(int[] temperatures) {
+
+        int n = temperatures.length;
+        int[] ans = new int[n];
+
+        Stack<Integer> stack = new Stack<>();
+
+        for (int i = 0; i < n; i++) {
+
+            while (!stack.isEmpty() &&
+                   temperatures[i] > temperatures[stack.peek()]) {
+
+                int index = stack.pop();
+                ans[index] = i - index;
+            }
+
+            stack.push(i);
+        }
+
+        return ans;
+    }
+}
+```
+
+---
+
+# **8. Time Complexity**
+
+**O(n)**
+
+Each index is pushed and popped at most once.
+
+---
+
+# **9. Space Complexity**
+
+**O(n)**
+
+In the worst case (strictly decreasing temperatures), all indices are stored in the stack.
+
+---
+
+# **10. Important Interview Note**
+
+Unlike **Next Greater Element I**, this problem requires the **distance (number of days)** instead of the next greater value.
+
+That's why we store **indices** in the stack rather than temperatures.
+
+This is a classic application of a **Monotonic Decreasing Stack** and is a very common interview pattern.
+
+---
+
+# **11. One-line Note for Interviews**
+
+**Use a Monotonic Decreasing Stack of indices. Whenever a warmer temperature is found, pop colder days from the stack and calculate the waiting time as `currentIndex - previousIndex`.** 🚀
