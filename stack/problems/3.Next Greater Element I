@@ -1,0 +1,542 @@
+# **496. Next Greater Element I**
+
+---
+
+# **1. Understand the Problem**
+
+We are given:
+
+* Two arrays:
+
+  * `nums1`
+  * `nums2`
+* `nums1` is a subset of `nums2`.
+
+For every element in `nums1`, we need to find its **Next Greater Element** in `nums2`.
+
+The **Next Greater Element** is the **first element to the right** that is **greater** than the current element.
+
+If no such element exists,
+
+Return **-1**.
+
+---
+
+### Example 1
+
+```text
+Input
+
+nums1 = [4,1,2]
+
+nums2 = [1,3,4,2]
+```
+
+Output
+
+```text
+[-1,3,-1]
+```
+
+Explanation
+
+* Next greater of **4** → none → **-1**
+* Next greater of **1** → **3**
+* Next greater of **2** → none → **-1**
+
+---
+
+### Example 2
+
+```text
+Input
+
+nums1 = [2,4]
+
+nums2 = [1,2,3,4]
+```
+
+Output
+
+```text
+[3,-1]
+```
+
+Explanation
+
+* Next greater of **2** → **3**
+* Next greater of **4** → none → **-1**
+
+---
+
+# **2. The Tricky Part**
+
+A brute-force approach is:
+
+For every element in `nums1`:
+
+* Find it in `nums2`.
+* Traverse to the right until a greater element is found.
+
+Example
+
+```text
+nums2
+
+1  3  4  2
+```
+
+To find the next greater of `1`:
+
+```text
+1 → 3 ✓
+```
+
+To find the next greater of `4`:
+
+```text
+4 → 2
+
+No greater element
+
+Answer = -1
+```
+
+If we repeat this for every element,
+
+Time Complexity becomes
+
+```text
+O(m × n)
+```
+
+Too slow.
+
+---
+
+# **3. Key Observation**
+
+Instead of searching again and again,
+
+We can process `nums2` **once** using a **Monotonic Decreasing Stack**.
+
+The stack always stores elements in **decreasing order**.
+
+Whenever we find a larger element,
+
+It becomes the **Next Greater Element** for all smaller elements on the top of the stack.
+
+Store these relationships in a **HashMap**.
+
+---
+
+### Picture
+
+Suppose
+
+```text
+nums2
+
+1  3  4  2
+```
+
+Initially
+
+```text
+Stack
+
+Empty
+```
+
+---
+
+Read **1**
+
+```text
+Stack
+
+1
+```
+
+---
+
+Read **3**
+
+Since
+
+```text
+3 > 1
+```
+
+Pop `1`.
+
+Store
+
+```text
+1 → 3
+```
+
+Push `3`
+
+```text
+Stack
+
+3
+```
+
+---
+
+Read **4**
+
+Since
+
+```text
+4 > 3
+```
+
+Pop `3`.
+
+Store
+
+```text
+3 → 4
+```
+
+Push `4`
+
+```text
+Stack
+
+4
+```
+
+---
+
+Read **2**
+
+```text
+2 < 4
+```
+
+Push `2`
+
+```text
+Stack
+
+2
+4
+```
+
+Traversal ends.
+
+Remaining elements
+
+```text
+2
+4
+```
+
+have no greater element.
+
+Their answer is
+
+```text
+-1
+```
+
+HashMap becomes
+
+```text
+1 → 3
+
+3 → 4
+```
+
+---
+
+# **4. Algorithm**
+
+### Step 1
+
+Create
+
+* Stack
+* HashMap
+
+---
+
+### Step 2
+
+Traverse `nums2`
+
+For each number:
+
+* While stack is not empty and current number is greater than stack top:
+
+  * Pop the stack.
+  * Store
+
+    ```
+    popped → current
+    ```
+* Push current number into the stack.
+
+---
+
+### Step 3
+
+For every element in `nums1`
+
+* If it exists in HashMap
+
+  * Answer = mapped value.
+* Otherwise
+
+  * Answer = -1.
+
+---
+
+# **5. Dry Run**
+
+### Input
+
+```text
+nums1 = [2,4]
+
+nums2 = [1,2,3,4]
+```
+
+---
+
+### Step 1
+
+Read **1**
+
+```text
+Stack
+
+1
+```
+
+---
+
+### Step 2
+
+Read **2**
+
+```text
+2 > 1
+```
+
+Pop
+
+```text
+1 → 2
+```
+
+Push
+
+```text
+2
+```
+
+Stack
+
+```text
+2
+```
+
+---
+
+### Step 3
+
+Read **3**
+
+```text
+3 > 2
+```
+
+Store
+
+```text
+2 → 3
+```
+
+Push
+
+```text
+3
+```
+
+---
+
+### Step 4
+
+Read **4**
+
+```text
+4 > 3
+```
+
+Store
+
+```text
+3 → 4
+```
+
+Push
+
+```text
+4
+```
+
+Traversal ends.
+
+Remaining
+
+```text
+4
+```
+
+No greater element.
+
+---
+
+HashMap
+
+```text
+1 → 2
+
+2 → 3
+
+3 → 4
+```
+
+Now answer `nums1`
+
+For
+
+```text
+2
+```
+
+Answer
+
+```text
+3
+```
+
+For
+
+```text
+4
+```
+
+No mapping.
+
+Answer
+
+```text
+-1
+```
+
+Final Output
+
+```text
+[3,-1]
+```
+
+---
+
+# **6. Why does this work?**
+
+The stack maintains elements in **decreasing order**.
+
+Whenever a larger element appears,
+
+It is automatically the **first greater element** for every smaller element on the top of the stack.
+
+Each element is:
+
+* pushed once
+* popped once
+
+So we never scan the array multiple times.
+
+---
+
+# **7. Java Code**
+
+```java
+class Solution {
+
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+
+        Stack<Integer> stack = new Stack<>();
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        for (int num : nums2) {
+
+            while (!stack.isEmpty() && num > stack.peek()) {
+                map.put(stack.pop(), num);
+            }
+
+            stack.push(num);
+        }
+
+        int[] ans = new int[nums1.length];
+
+        for (int i = 0; i < nums1.length; i++) {
+            ans[i] = map.getOrDefault(nums1[i], -1);
+        }
+
+        return ans;
+    }
+}
+```
+
+---
+
+# **8. Time Complexity**
+
+**O(n + m)**
+
+* `n` = size of `nums2`
+* `m` = size of `nums1`
+
+Each element is pushed and popped at most once.
+
+---
+
+# **9. Space Complexity**
+
+**O(n)**
+
+* Stack stores elements.
+* HashMap stores Next Greater Element mappings.
+
+---
+
+# **10. Important Interview Note**
+
+This problem introduces the concept of a **Monotonic Decreasing Stack**.
+
+The key idea is:
+
+* Keep elements in decreasing order.
+* Whenever a larger element appears, it becomes the **Next Greater Element** for all smaller elements waiting in the stack.
+
+Using a **HashMap** allows answering queries for `nums1` in **O(1)** time.
+
+This pattern is commonly used in problems like:
+
+* **503. Next Greater Element II**
+* **739. Daily Temperatures**
+* **901. Online Stock Span**
+* **84. Largest Rectangle in Histogram**
+
+---
+
+# **11. One-line Note for Interviews**
+
+**Use a Monotonic Decreasing Stack to preprocess `nums2` and store each element's Next Greater Element in a HashMap. Then answer each query in `nums1` in O(1) time.** 🚀
