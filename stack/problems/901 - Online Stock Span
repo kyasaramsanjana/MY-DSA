@@ -1,0 +1,560 @@
+901. Online Stock Span
+
+
+---
+
+1. Understand the Problem
+
+We need to design a class StockSpanner that supports one operation:
+
+next(price)
+
+For each day's stock price, return its stock span.
+
+The stock span is the number of consecutive days (including today) for which the stock price was less than or equal to today's price.
+
+
+---
+
+Example
+
+Input
+
+next(100)
+
+next(80)
+
+next(60)
+
+next(70)
+
+next(60)
+
+next(75)
+
+next(85)
+
+Output
+
+1
+
+1
+
+1
+
+2
+
+1
+
+4
+
+6
+
+
+---
+
+Explanation
+
+Day	Price	Span
+
+1	100	1
+2	80	1
+3	60	1
+4	70	2
+5	60	1
+6	75	4
+7	85	6
+
+
+
+---
+
+2. The Tricky Part
+
+A brute-force approach is:
+
+For every new price,
+
+Keep moving left until a greater price is found.
+
+Example
+
+Prices
+
+100 80 60 70 60 75
+                ↑
+
+For 75
+
+Check
+
+75 ≥ 60 ✓
+
+75 ≥ 70 ✓
+
+75 ≥ 60 ✓
+
+75 < 80 ✗
+
+Span
+
+4
+
+Doing this for every new price results in
+
+O(n²)
+
+Too slow.
+
+
+---
+
+3. Key Observation
+
+Instead of checking previous prices every time,
+
+Use a Monotonic Decreasing Stack.
+
+The stack stores:
+
+(price, span)
+
+Whenever a new price is greater than or equal to the top price,
+
+Pop it and add its span to the current span.
+
+This way, each price is processed only once.
+
+
+---
+
+Picture
+
+Initially
+
+Stack
+
+Empty
+
+
+---
+
+next(100)
+
+Current span
+
+1
+
+Push
+
+(100,1)
+
+Stack
+
+(100,1)
+
+Return
+
+1
+
+
+---
+
+next(80)
+
+80 < 100
+
+Push
+
+(80,1)
+
+Stack
+
+(80,1)
+
+(100,1)
+
+Return
+
+1
+
+
+---
+
+next(70)
+
+Current span
+
+1
+
+Top
+
+60
+
+Since
+
+70 ≥ 60
+
+Pop
+
+(60,1)
+
+Current span
+
+1 + 1 = 2
+
+Push
+
+(70,2)
+
+Stack
+
+(70,2)
+
+(80,1)
+
+(100,1)
+
+Return
+
+2
+
+
+---
+
+next(75)
+
+Current span
+
+1
+
+Pop
+
+(60,1)
+
+Span
+
+2
+
+Pop
+
+(70,2)
+
+Span
+
+4
+
+Now
+
+75 < 80
+
+Stop.
+
+Push
+
+(75,4)
+
+Return
+
+4
+
+
+---
+
+4. Algorithm
+
+For every new price:
+
+1. Initialize
+
+span = 1
+
+
+2. While the stack is not empty and
+
+currentPrice >= stack.top.price
+
+Add the top span to span.
+
+Pop the stack.
+
+
+
+3. Push
+
+(currentPrice, span)
+
+
+4. Return span.
+
+
+
+
+---
+
+5. Dry Run
+
+Input
+
+100
+
+80
+
+60
+
+70
+
+60
+
+75
+
+85
+
+
+---
+
+Day 1
+
+Price = 100
+
+Span = 1
+
+Stack
+
+(100,1)
+
+Return
+
+1
+
+
+---
+
+Day 2
+
+Price = 80
+
+80 < 100
+
+Push
+
+(80,1)
+
+Return
+
+1
+
+
+---
+
+Day 3
+
+Price = 60
+
+Push
+
+(60,1)
+
+Return
+
+1
+
+
+---
+
+Day 4
+
+Price = 70
+
+Pop
+
+(60,1)
+
+Span
+
+2
+
+Push
+
+(70,2)
+
+Return
+
+2
+
+
+---
+
+Day 5
+
+Price = 60
+
+Push
+
+(60,1)
+
+Return
+
+1
+
+
+---
+
+Day 6
+
+Price = 75
+
+Pop
+
+(60,1)
+
+Span
+
+2
+
+Pop
+
+(70,2)
+
+Span
+
+4
+
+Push
+
+(75,4)
+
+Return
+
+4
+
+
+---
+
+Day 7
+
+Price = 85
+
+Pop
+
+(75,4)
+
+Span
+
+5
+
+Pop
+
+(80,1)
+
+Span
+
+6
+
+Push
+
+(85,6)
+
+Return
+
+6
+
+Final Output
+
+[1,1,1,2,1,4,6]
+
+
+---
+
+6. Why does this work?
+
+The stack always stores prices in decreasing order.
+
+Whenever a new price is greater than or equal to the top price,
+
+That older price can never affect future spans again.
+
+So we:
+
+Pop it.
+
+Add its span to the current span.
+
+
+Each price is:
+
+pushed once
+
+popped once
+
+
+This makes the algorithm O(n) overall.
+
+
+---
+
+7. Java Code
+
+class StockSpanner {
+
+    Stack<int[]> stack;
+
+    public StockSpanner() {
+        stack = new Stack<>();
+    }
+
+    public int next(int price) {
+
+        int span = 1;
+
+        while (!stack.isEmpty() && stack.peek()[0] <= price) {
+            span += stack.pop()[1];
+        }
+
+        stack.push(new int[]{price, span});
+
+        return span;
+    }
+}
+
+
+---
+
+8. Time Complexity
+
+Amortized O(1) per next() call.
+
+Overall, for n calls:
+
+O(n)
+
+Each price is pushed and popped at most once.
+
+
+---
+
+9. Space Complexity
+
+O(n)
+
+In the worst case (strictly decreasing prices), all prices remain in the stack.
+
+
+---
+
+10. Important Interview Note
+
+Unlike Next Greater Element and Daily Temperatures, this problem is online—prices arrive one at a time.
+
+Instead of storing only prices, store (price, span) pairs.
+
+When popping smaller or equal prices, add their spans to the current span instead of recounting previous days.
+
+This is another classic application of a Monotonic Decreasing Stack.
+
+
+---
+
+11. One-line Note for Interviews
+
+Use a Monotonic Decreasing Stack storing (price, span) pairs. Pop all smaller or equal prices, add their spans to the current span, then push the current price with its total span. 🚀
