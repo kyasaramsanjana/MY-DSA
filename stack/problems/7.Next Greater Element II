@@ -1,0 +1,456 @@
+1. Understand the Problem
+
+We are given a circular array.
+
+For every element, find the next greater element.
+
+If no greater element exists, return -1.
+
+A circular array means:
+
+After the last element, we continue searching from the beginning.
+We can wrap around only once.
+Example
+Input
+
+nums = [1,2,1]
+
+Output
+
+[2,-1,2]
+Explanation
+Index	Value	Next Greater
+0	1	2
+1	2	-1
+2	1	2 (wrap around)
+2. The Tricky Part
+
+If this were a normal array, we'd only search to the right.
+
+But here the array is circular.
+
+Example
+
+1 2 1
+    ↑
+
+For the last 1, we continue searching:
+
+1 → 2 ✓
+
+Answer is
+
+2
+
+A brute-force approach:
+
+For every element,
+
+Keep moving right,
+
+Wrap around if necessary,
+
+Stop after checking all elements.
+
+This takes
+
+O(n²)
+
+Too slow.
+
+3. Key Observation
+
+We can simulate the circular array by traversing it twice.
+
+Instead of creating another array,
+
+Loop from
+
+2*n - 1
+
+down to
+
+0
+
+Use
+
+i % n
+
+to get the real index.
+
+Maintain a Monotonic Decreasing Stack.
+
+The stack stores values.
+
+Before processing the current element:
+
+Remove all elements smaller than or equal to it.
+The remaining top (if any) is the next greater element.
+Picture
+
+Array
+
+1 2 1
+
+Traverse
+
+1 2 1 1 2 1
+
+(using indices)
+
+5 4 3 2 1 0
+
+No extra array is actually created.
+
+Initial
+Stack
+
+Empty
+i = 5
+
+Actual index
+
+5 % 3 = 2
+
+Value
+
+1
+
+Stack empty
+
+Answer not stored yet (first pass)
+
+Push
+
+1
+
+Stack
+
+1
+i = 4
+
+Value
+
+2
+
+Pop
+
+1
+
+Push
+
+2
+
+Stack
+
+2
+i = 3
+
+Value
+
+1
+
+Top
+
+2
+
+Push
+
+1
+
+Stack
+
+1
+
+2
+i = 2
+
+Actual index
+
+2
+
+Value
+
+1
+
+Pop
+
+1
+
+Top becomes
+
+2
+
+Answer
+
+2
+
+Push
+
+1
+i = 1
+
+Value
+
+2
+
+Pop
+
+1
+
+Pop
+
+2
+
+Stack empty
+
+Answer
+
+-1
+
+Push
+
+2
+i = 0
+
+Value
+
+1
+
+Top
+
+2
+
+Answer
+
+2
+
+Push
+
+1
+
+Final Output
+
+[2,-1,2]
+4. Algorithm
+
+Let
+
+n = nums.length
+
+Create
+
+answer[n]
+
+Create an empty stack.
+
+Traverse
+
+for (i = 2*n - 1; i >= 0; i--)
+
+For each element:
+
+Current index
+
+idx = i % n
+
+While stack is not empty and
+
+stack.peek() <= nums[idx]
+
+Pop the stack.
+
+If
+
+i < n
+
+Then
+
+stack empty → answer = -1
+otherwise → answer = stack.peek()
+
+Push
+
+nums[idx]
+5. Dry Run
+
+Input
+
+nums = [1,2,1]
+i = 5
+idx = 2
+
+Value = 1
+
+Stack
+
+Empty
+
+Push
+
+1
+
+Stack
+
+1
+i = 4
+idx = 1
+
+Value = 2
+
+Pop
+
+1
+
+Push
+
+2
+
+Stack
+
+2
+i = 3
+idx = 0
+
+Value = 1
+
+Top
+
+2
+
+Push
+
+1
+
+Stack
+
+1
+
+2
+i = 2
+idx = 2
+
+Value = 1
+
+Pop
+
+1
+
+Top
+
+2
+
+Answer
+
+2
+
+Push
+
+1
+i = 1
+idx = 1
+
+Value = 2
+
+Pop
+
+1
+
+Pop
+
+2
+
+Stack empty
+
+Answer
+
+-1
+
+Push
+
+2
+i = 0
+idx = 0
+
+Value = 1
+
+Top
+
+2
+
+Answer
+
+2
+
+Push
+
+1
+
+Final Output
+
+[2,-1,2]
+6. Why does this work?
+
+The stack always keeps elements in strictly decreasing order.
+
+When processing a number:
+
+Remove all smaller or equal elements because they can never be the next greater element.
+The first larger element on the stack is the answer.
+
+Traversing the array twice ensures every element also considers values before it (after wrapping around).
+
+Each element is:
+
+pushed once per traversal
+popped at most once
+
+So the algorithm remains O(n).
+
+7. Java Code
+class Solution {
+    public int[] nextGreaterElements(int[] nums) {
+
+        int n = nums.length;
+        int[] ans = new int[n];
+        Stack<Integer> stack = new Stack<>();
+
+        for (int i = 2 * n - 1; i >= 0; i--) {
+
+            int idx = i % n;
+
+            while (!stack.isEmpty() && stack.peek() <= nums[idx]) {
+                stack.pop();
+            }
+
+            if (i < n) {
+                ans[idx] = stack.isEmpty() ? -1 : stack.peek();
+            }
+
+            stack.push(nums[idx]);
+        }
+
+        return ans;
+    }
+}
+8. Time Complexity
+
+Each element is pushed and popped at most once (per effective processing).
+
+Overall:
+
+O(n)
+9. Space Complexity
+
+The stack stores at most n elements.
+
+O(n)
+10. Important Interview Note
+
+The only difference from Next Greater Element I is that the array is circular.
+
+Instead of physically duplicating the array, iterate from 2*n - 1 to 0 and access elements using i % n. The first traversal prepares future greater elements, and the second traversal fills the answers.
+
+11. One-line Note for Interviews
+
+Use a Monotonic Decreasing Stack and traverse the array twice (from 2*n-1 to 0) using i % n to simulate a circular array. Pop all smaller or equal elements, and the remaining top is the next greater element. 🚀
