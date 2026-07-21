@@ -1,6 +1,5 @@
 PUSH Operation (Stack)
-1. What is Push?
-
+1. What is Push
 Imagine a stack of plates in a hotel.
 
 Top
@@ -12,7 +11,7 @@ A waiter brings a new plate.
 
 Where will he place it?
 
-✅ Only on the TOP.
+Only on the TOP.
 
 He cannot place it in the middle or at the bottom.
 
@@ -409,5 +408,5 @@ Array implementation can cause Stack Overflow if full.
 Linked List implementation inserts the new node at the head (Top).
 
 Memory Trick:
-PUSH = Put on the Top 📚
+PUSH = Put on the Top 
 Think of adding a new plate or a new book—you always place it on top, never in the middle or bottom.
