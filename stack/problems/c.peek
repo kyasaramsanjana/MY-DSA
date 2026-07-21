@@ -2,14 +2,11 @@
 
 Imagine a stack of plates in a hotel.
 
-```
 Top
  ↓
 Plate 3
 Plate 2
 Plate 1
-```
-
 The waiter wants to know **which plate is on the top**.
 
 Will he remove it?
@@ -26,17 +23,14 @@ This operation is called **PEEK**.
 
 Since a stack follows **LIFO (Last In, First Out)**, the top element is always the most recently inserted element.
 
----
-
 # 2. Syntax in Java
 
 ```java
 stack.peek();
-```
 
 ### Example
 
-```java
+java
 Stack<Integer> stack = new Stack<>();
 
 stack.push(10);
@@ -44,10 +38,6 @@ stack.push(20);
 stack.push(30);
 
 System.out.println(stack.peek());
-```
-
----
-
 # 3. Visualization
 
 ### Initially
