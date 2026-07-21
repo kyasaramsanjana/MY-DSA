@@ -1,0 +1,487 @@
+678. Valid Parenthesis String
+
+
+---
+
+1. Understand the Problem
+
+We are given a string containing:
+
+'('
+
+')'
+
+'*'
+
+
+The '*' character can represent:
+
+'('
+
+')'
+
+an empty string ""
+
+
+Return true if the string can be a valid parentheses string, otherwise return false.
+
+
+---
+
+Example 1
+
+Input
+
+s = "()"
+
+Output
+
+true
+
+
+---
+
+Example 2
+
+Input
+
+s = "(*)"
+
+Output
+
+true
+
+
+---
+
+Example 3
+
+Input
+
+s = "(*))"
+
+Output
+
+true
+
+
+---
+
+2. The Tricky Part
+
+Since '*' can become three different things, trying every possibility would be exponential.
+
+Example
+
+(*)
+
+* can be
+
+(
+)
+(empty)
+
+Trying every combination gives
+
+O(3ⁿ)
+
+Too slow.
+
+
+---
+
+3. Key Observation
+
+Use two stacks:
+
+One stack stores the indices of '('.
+
+Another stack stores the indices of '*'.
+
+
+Why store indices?
+
+Because '*' can only match a '(' if it appears after it.
+
+The order matters.
+
+
+---
+
+Picture
+
+Input
+
+(*))
+
+Initially
+
+Open Stack : Empty
+
+Star Stack : Empty
+
+
+---
+
+Read '('
+
+Push index 0
+
+Open
+
+0
+
+Star
+
+Empty
+
+
+---
+
+Read '*'
+
+Push index 1
+
+Open
+
+0
+
+Star
+
+1
+
+
+---
+
+Read ')'
+
+There is an opening bracket.
+
+Pop Open.
+
+Open
+
+Empty
+
+Star
+
+1
+
+
+---
+
+Read ')'
+
+No '(' available.
+
+Use '*' as '('.
+
+Pop Star.
+
+Open
+
+Empty
+
+Star
+
+Empty
+
+Successfully matched.
+
+Answer
+
+true
+
+
+---
+
+4. Algorithm
+
+Traverse the string.
+
+If character is '('
+
+Push its index into open stack.
+
+If character is '*'
+
+Push its index into star stack.
+
+If character is ')'
+
+1. If open stack is not empty
+
+Pop open stack.
+
+
+2. Else if star stack is not empty
+
+Pop star stack.
+
+
+3. Otherwise
+
+Return false.
+
+
+
+
+---
+
+After traversal,
+
+There may still be unmatched '('.
+
+Match them using '*'.
+
+While both stacks are not empty:
+
+if openIndex < starIndex
+
+Pop both.
+
+Otherwise,
+
+Return false.
+
+Finally,
+
+If open stack is empty,
+
+Return true.
+
+Else,
+
+Return false.
+
+
+---
+
+5. Dry Run
+
+Input
+
+(*))
+
+
+---
+
+Index 0
+
+(
+
+Push into Open
+
+Open
+
+0
+
+Star
+
+Empty
+
+
+---
+
+Index 1
+
+*
+
+Push into Star
+
+Open
+
+0
+
+Star
+
+1
+
+
+---
+
+Index 2
+
+)
+
+Pop Open
+
+Open
+
+Empty
+
+Star
+
+1
+
+
+---
+
+Index 3
+
+)
+
+Open empty
+
+Pop Star
+
+Open
+
+Empty
+
+Star
+
+Empty
+
+Traversal complete.
+
+Open stack empty.
+
+Answer
+
+true
+
+
+---
+
+Another Example
+
+*(
+
+Open
+
+1
+
+Star
+
+0
+
+Now
+
+Open index = 1
+
+Star index = 0
+
+Since
+
+1 > 0
+
+The star appears before '('.
+
+It cannot become a closing bracket for it.
+
+Answer
+
+false
+
+
+---
+
+6. Why does this work?
+
+Always use a real '(' before using a '*'.
+
+Store indices to preserve the order.
+
+After traversal, every remaining '(' must be matched with a later '*'.
+
+
+Each index is:
+
+pushed once
+
+popped once
+
+
+So the solution is linear.
+
+
+---
+
+7. Java Code
+
+class Solution {
+    public boolean checkValidString(String s) {
+
+        Stack<Integer> open = new Stack<>();
+        Stack<Integer> star = new Stack<>();
+
+        for (int i = 0; i < s.length(); i++) {
+
+            char ch = s.charAt(i);
+
+            if (ch == '(') {
+                open.push(i);
+            }
+            else if (ch == '*') {
+                star.push(i);
+            }
+            else {
+
+                if (!open.isEmpty()) {
+                    open.pop();
+                }
+                else if (!star.isEmpty()) {
+                    star.pop();
+                }
+                else {
+                    return false;
+                }
+            }
+        }
+
+        while (!open.isEmpty() && !star.isEmpty()) {
+
+            if (open.peek() < star.peek()) {
+                open.pop();
+                star.pop();
+            }
+            else {
+                return false;
+            }
+        }
+
+        return open.isEmpty();
+    }
+}
+
+
+---
+
+8. Time Complexity
+
+Each character is pushed and popped at most once.
+
+Overall:
+
+O(n)
+
+
+---
+
+9. Space Complexity
+
+Two stacks may together store all characters.
+
+O(n)
+
+
+---
+
+10. Important Interview Note
+
+The key idea is to use two stacks of indices:
+
+One for '('
+
+One for '*'
+
+
+When a ')' is encountered, always match it with a real '(' first. If none exists, use a '*'. After processing the string, match any remaining '(' with later '*' characters while ensuring the '*' appears after the '('.
+
+
+---
+
+11. One-line Note for Interviews
+
+Use two stacks storing indices of '(' and '*'. Match ')' with '(' first, otherwise with '*'. Finally, match remaining '(' with later '*' while maintaining index order. 🚀
