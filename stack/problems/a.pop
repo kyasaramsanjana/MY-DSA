@@ -1,6 +1,5 @@
 POP Operation (Stack)
-1. What is Pop?
-
+1. What is Pop
 Imagine a stack of plates.
 
 Top
@@ -11,7 +10,7 @@ Plate 1
 
 If someone asks you to remove a plate, which plate can you remove?
 
-✅ Only the top plate.
+Only the top plate.
 
 You cannot remove Plate 2 or Plate 1 directly.
 
@@ -413,7 +412,7 @@ You cannot directly remove C++ because Java and Python are above it.
 
 This is why a stack follows LIFO (Last In, First Out).
 
-⭐ Quick Revision (30 Seconds)
+⭐ Quick Revision
 Pop = Remove the top element from the stack.
 Returns the removed element.
 Works only on the top-most element.
