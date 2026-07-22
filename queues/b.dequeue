@@ -1,0 +1,452 @@
+# 📚 Dequeue Operation (Queue Notes)
+
+---
+
+# What is Dequeue?
+
+**Dequeue** is the operation of **removing (deleting) an element from a queue**.
+
+Since a queue follows **FIFO (First In, First Out)**, the element that was inserted first is removed first.
+
+> **Definition:** Dequeue means removing an element from the **front (beginning)** of the queue.
+
+---
+
+# Visual Representation
+
+Initially, the queue is:
+
+```text
+Front                     Rear
+  ↓                         ↓
++----+----+----+----+
+| 10 | 20 | 30 | 40 |
++----+----+----+----+
+```
+
+Now perform:
+
+```text
+Dequeue()
+```
+
+The element **10** is removed.
+
+After deletion:
+
+```text
+Front                Rear
+  ↓                    ↓
++----+----+----+
+| 20 | 30 | 40 |
++----+----+----+
+```
+
+Notice that:
+
+* The **first element is removed**.
+* The **front pointer moves to the next element**.
+* The **rear pointer remains unchanged**.
+
+---
+
+# Step-by-Step Example
+
+Initially:
+
+```text
+Queue
+
+10 20 30 40
+```
+
+Front = 10
+
+Rear = 40
+
+---
+
+### Step 1
+
+```text
+Dequeue()
+```
+
+Removed:
+
+```text
+10
+```
+
+Queue becomes:
+
+```text
+20 30 40
+```
+
+---
+
+### Step 2
+
+```text
+Dequeue()
+```
+
+Removed:
+
+```text
+20
+```
+
+Queue becomes:
+
+```text
+30 40
+```
+
+---
+
+### Step 3
+
+```text
+Dequeue()
+```
+
+Removed:
+
+```text
+30
+```
+
+Queue becomes:
+
+```text
+40
+```
+
+---
+
+### Step 4
+
+```text
+Dequeue()
+```
+
+Removed:
+
+```text
+40
+```
+
+Queue becomes:
+
+```text
+Empty Queue
+```
+
+Front = -1
+
+Rear = -1
+
+---
+
+# Dequeue in an Array-Based Queue
+
+Suppose the queue is stored in an array.
+
+```text
+Index
+
+0   1   2   3   4
+```
+
+Array:
+
+```text
+10 20 30 40 _
+```
+
+```text
+Front = 0
+Rear  = 3
+```
+
+---
+
+## First Dequeue
+
+Remove:
+
+```text
+10
+```
+
+Move the front pointer:
+
+```cpp
+front++;
+```
+
+Result:
+
+```text
+Index
+
+0   1   2   3   4
+
+10 20 30 40 _
+    ↑
+ Front
+
+Rear = 3
+```
+
+Logically, the queue is now:
+
+```text
+20 30 40
+```
+
+> **Note:** We do **not** physically erase `10`. We simply move the `front` pointer. The old value is ignored.
+
+---
+
+## Second Dequeue
+
+Remove:
+
+```text
+20
+```
+
+Move front again:
+
+```cpp
+front++;
+```
+
+Result:
+
+```text
+30 40
+```
+
+---
+
+# Algorithm (Array)
+
+```text
+Dequeue()
+
+1. Check if queue is empty.
+2. If empty → Underflow.
+3. Store the front element (optional).
+4. If front == rear:
+      front = rear = -1
+   Else:
+      front = front + 1
+5. Return the removed element.
+```
+
+---
+
+# Pseudocode
+
+```cpp
+dequeue()
+
+if(front == -1)
+{
+    Queue Underflow
+}
+else
+{
+    item = arr[front];
+
+    if(front == rear)
+    {
+        front = -1;
+        rear = -1;
+    }
+    else
+    {
+        front++;
+    }
+
+    return item;
+}
+```
+
+---
+
+# Example Execution
+
+Queue Size = 5
+
+Initially:
+
+```text
+0   1   2   3   4
+
+5 10 15 25 _
+```
+
+```text
+Front = 0
+Rear  = 3
+```
+
+---
+
+### Dequeue()
+
+Removed:
+
+```text
+5
+```
+
+Now:
+
+```text
+10 15 25
+```
+
+```text
+Front = 1
+Rear = 3
+```
+
+---
+
+### Dequeue()
+
+Removed:
+
+```text
+10
+```
+
+Now:
+
+```text
+15 25
+```
+
+```text
+Front = 2
+Rear = 3
+```
+
+---
+
+# Queue Underflow
+
+Suppose the queue is empty:
+
+```text
+Queue
+
+[ ]
+```
+
+```text
+Front = -1
+Rear = -1
+```
+
+Now perform:
+
+```text
+Dequeue()
+```
+
+There is no element to remove.
+
+This condition is called:
+
+```text
+Queue Underflow
+```
+
+---
+
+# Dequeue in a Linked List
+
+Initially:
+
+```text
+Front                    Rear
+  ↓                        ↓
+10 → 20 → 30 → 40 → NULL
+```
+
+Perform:
+
+```text
+Dequeue()
+```
+
+Remove the first node (`10`).
+
+Move the front pointer:
+
+```text
+Front               Rear
+  ↓                   ↓
+20 → 30 → 40 → NULL
+```
+
+If the removed node was the **only node**, then after deletion:
+
+```text
+Front = NULL
+Rear  = NULL
+```
+
+The queue becomes empty.
+
+---
+
+# Time Complexity
+
+| Operation | Time     |
+| --------- | -------- |
+| Dequeue   | **O(1)** |
+
+### Why?
+
+* We always remove the element at the **front**.
+* We simply move the `front` pointer.
+* No traversal or shifting is required.
+
+---
+
+# Space Complexity
+
+* **Array Queue:** **O(1)** extra space.
+* **Linked List Queue:** **O(1)** extra space.
+
+---
+
+# Enqueue vs Dequeue
+
+| Enqueue                       | Dequeue                        |
+| ----------------------------- | ------------------------------ |
+| Adds an element               | Removes an element             |
+| Happens at the **Rear**       | Happens at the **Front**       |
+| Rear pointer moves            | Front pointer moves            |
+| Queue may become **Overflow** | Queue may become **Underflow** |
+| Time: **O(1)**                | Time: **O(1)**                 |
+
+---
+
+# Key Points to Remember
+
+* **Dequeue** means **remove an element from the queue**.
+* Removal **always happens from the front**.
+* The **front pointer moves forward** after deletion.
+* The **rear pointer remains unchanged**, unless the last element is removed.
+* If the queue becomes empty after deletion, set both **front** and **rear** to `-1` (or `NULL` in a linked list).
+* Trying to dequeue from an empty queue causes **Queue Underflow**.
+* **Time Complexity:** **O(1)**.
