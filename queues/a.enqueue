@@ -1,0 +1,428 @@
+# 📚 Enqueue Operation (Queue Notes)
+
+---
+
+# What is Enqueue?
+
+**Enqueue** is the operation of **inserting (adding) a new element into a queue**.
+
+Since a queue follows **FIFO (First In, First Out)**, a new element is **always inserted at the Rear** of the queue.
+
+> **Definition:** Enqueue means adding an element to the **rear (end)** of the queue.
+
+---
+
+# Visual Representation
+
+Initially, the queue is:
+
+```text
+Front                Rear
+  ↓                    ↓
++----+----+----+
+| 10 | 20 | 30 |
++----+----+----+
+```
+
+Now perform:
+
+```text
+Enqueue(40)
+```
+
+After insertion:
+
+```text
+Front                     Rear
+  ↓                         ↓
++----+----+----+----+
+| 10 | 20 | 30 | 40 |
++----+----+----+----+
+```
+
+Notice that:
+
+* Existing elements do **not move**.
+* The new element is placed at the **rear**.
+* The **rear pointer** moves to the new element.
+
+---
+
+# Step-by-Step Example
+
+Initially:
+
+```text
+Queue = [ ]
+Front = -1
+Rear  = -1
+```
+
+### Step 1
+
+```text
+Enqueue(10)
+```
+
+```text
+Front  Rear
+  ↓      ↓
++----+
+| 10 |
++----+
+```
+
+Queue:
+
+```text
+10
+```
+
+---
+
+### Step 2
+
+```text
+Enqueue(20)
+```
+
+```text
+Front        Rear
+  ↓            ↓
++----+----+
+| 10 | 20 |
++----+----+
+```
+
+Queue:
+
+```text
+10 20
+```
+
+---
+
+### Step 3
+
+```text
+Enqueue(30)
+```
+
+```text
+Front             Rear
+  ↓                 ↓
++----+----+----+
+| 10 | 20 | 30 |
++----+----+----+
+```
+
+Queue:
+
+```text
+10 20 30
+```
+
+---
+
+### Step 4
+
+```text
+Enqueue(40)
+```
+
+```text
+Front                  Rear
+  ↓                      ↓
++----+----+----+----+
+| 10 | 20 | 30 | 40 |
++----+----+----+----+
+```
+
+Queue:
+
+```text
+10 20 30 40
+```
+
+---
+
+# Enqueue in an Array-Based Queue
+
+Suppose the array size is **5**.
+
+Initially:
+
+```text
+Index
+
+0   1   2   3   4
+```
+
+Array:
+
+```text
+_   _   _   _   _
+```
+
+Front = -1
+
+Rear = -1
+
+---
+
+## Insert First Element
+
+```text
+Enqueue(10)
+```
+
+Since the queue is empty:
+
+```cpp
+front = 0;
+rear = 0;
+arr[rear] = 10;
+```
+
+Result:
+
+```text
+0   1   2   3   4
+
+10  _   _   _   _
+```
+
+---
+
+## Insert Second Element
+
+```text
+Enqueue(20)
+```
+
+Move rear:
+
+```cpp
+rear++;
+```
+
+Insert:
+
+```cpp
+arr[rear] = 20;
+```
+
+Result:
+
+```text
+0   1   2   3   4
+
+10 20  _  _  _
+```
+
+---
+
+## Insert Third Element
+
+```text
+Enqueue(30)
+```
+
+Result:
+
+```text
+0   1   2   3   4
+
+10 20 30 _ _
+```
+
+---
+
+# Algorithm (Array)
+
+```text
+Enqueue(value)
+
+1. Check if queue is full.
+2. If full → Overflow.
+3. If queue is empty:
+      front = rear = 0
+4. Otherwise:
+      rear = rear + 1
+5. arr[rear] = value
+```
+
+---
+
+# Pseudocode
+
+```cpp
+enqueue(value)
+
+if(rear == MAX - 1)
+    Queue Overflow
+
+else if(front == -1)
+{
+    front = 0;
+    rear = 0;
+}
+else
+{
+    rear++;
+}
+
+arr[rear] = value;
+```
+
+---
+
+# Example Execution
+
+Queue Size = 5
+
+### Initially
+
+```text
+Front = -1
+Rear = -1
+```
+
+---
+
+### Enqueue(5)
+
+```text
+Front = 0
+Rear = 0
+
+5
+```
+
+---
+
+### Enqueue(10)
+
+```text
+Front = 0
+Rear = 1
+
+5 10
+```
+
+---
+
+### Enqueue(15)
+
+```text
+Front = 0
+Rear = 2
+
+5 10 15
+```
+
+---
+
+### Enqueue(25)
+
+```text
+Front = 0
+Rear = 3
+
+5 10 15 25
+```
+
+---
+
+# Queue Overflow
+
+If the queue is already full:
+
+```text
+0   1   2   3
+
+10 20 30 40
+```
+
+Now:
+
+```text
+Enqueue(50)
+```
+
+There is **no empty space**, so insertion is impossible.
+
+This condition is called:
+
+```text
+Queue Overflow
+```
+
+---
+
+# Enqueue in a Linked List
+
+Instead of an array, we create a new node.
+
+Suppose:
+
+```text
+Front             Rear
+  ↓                 ↓
+10 → 20 → 30 → NULL
+```
+
+Now:
+
+```text
+Enqueue(40)
+```
+
+Create a new node:
+
+```text
+40 → NULL
+```
+
+Attach it to the rear:
+
+```text
+Front                    Rear
+  ↓                        ↓
+10 → 20 → 30 → 40 → NULL
+```
+
+Move the rear pointer to the new node.
+
+---
+
+# Time Complexity
+
+| Operation | Time     |
+| --------- | -------- |
+| Enqueue   | **O(1)** |
+
+Why?
+
+* We directly insert at the rear.
+* No traversal is required.
+* No shifting of elements is needed.
+
+---
+
+# Space Complexity
+
+* **Array Queue:** **O(1)** extra space per insertion (array is already allocated).
+* **Linked List Queue:** **O(1)** extra space for one new node.
+
+---
+
+# Key Points to Remember
+
+* **Enqueue** means **insert an element into the queue**.
+* Insertion **always happens at the rear**.
+* The **rear pointer moves forward** after insertion.
+* The **front pointer does not change** unless the queue was empty.
+* In an **array queue**, check for **overflow** before inserting.
+* In a **linked-list queue**, create a new node and connect it to the rear.
+* **Time Complexity:** **O(1)**.
