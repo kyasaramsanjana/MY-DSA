@@ -1,0 +1,543 @@
+# **933. Number of Recent Calls**
+
+---
+
+# **1. Understand the Problem**
+
+We need to design a class `RecentCounter` that supports one operation:
+
+```text
+ping(t)
+```
+
+Each call happens at time `t` (in milliseconds).
+
+For every `ping(t)`, return the number of requests that happened in the last **3000 milliseconds**, including the current request.
+
+In other words, count all requests in the range:
+
+```text
+[t - 3000, t]
+```
+
+---
+
+### Example
+
+```text
+Input
+
+ping(1)
+
+ping(100)
+
+ping(3001)
+
+ping(3002)
+```
+
+Output
+
+```text
+1
+
+2
+
+3
+
+3
+```
+
+---
+
+### Explanation
+
+|       Call | Valid Time Range | Requests in Range | Answer |
+| ---------: | :--------------- | ----------------: | -----: |
+|    ping(1) | [-2999, 1]       |                 1 |      1 |
+|  ping(100) | [-2900, 100]     |            1, 100 |      2 |
+| ping(3001) | [1, 3001]        |      1, 100, 3001 |      3 |
+| ping(3002) | [2, 3002]        |   100, 3001, 3002 |      3 |
+
+---
+
+# **2. The Tricky Part**
+
+A brute-force approach would be:
+
+For every new `ping(t)`,
+
+Store all previous times.
+
+Then scan every stored request and count those inside
+
+```text
+[t - 3000, t]
+```
+
+Example
+
+```text
+Requests
+
+1 100 3001 3002
+             ↑
+```
+
+For `3002`
+
+Check
+
+```text
+1      ✗
+
+100    ✓
+
+3001   ✓
+
+3002   ✓
+```
+
+Doing this for every request results in
+
+```text
+O(n²)
+```
+
+Too slow.
+
+---
+
+# **3. Key Observation**
+
+Notice that:
+
+* Requests always arrive in **increasing order of time**.
+* Once a request becomes older than **3000 ms**, it can **never** be useful again.
+
+So we only need to keep the recent requests.
+
+This is exactly what a **Queue** does.
+
+* Insert new requests at the back.
+* Remove old requests from the front.
+
+---
+
+### Picture
+
+Initially
+
+```text
+Queue
+
+Empty
+```
+
+---
+
+### ping(1)
+
+Add
+
+```text
+1
+```
+
+Queue
+
+```text
+Front → 1 ← Rear
+```
+
+Window
+
+```text
+[-2999, 1]
+```
+
+Return
+
+```text
+1
+```
+
+---
+
+### ping(100)
+
+Add
+
+```text
+100
+```
+
+Queue
+
+```text
+Front → 1 100 ← Rear
+```
+
+Window
+
+```text
+[-2900, 100]
+```
+
+Nothing is removed.
+
+Return
+
+```text
+2
+```
+
+---
+
+### ping(3001)
+
+Add
+
+```text
+3001
+```
+
+Queue
+
+```text
+Front → 1 100 3001 ← Rear
+```
+
+Window
+
+```text
+[1, 3001]
+```
+
+Nothing is removed because
+
+```text
+1 >= 1
+```
+
+Return
+
+```text
+3
+```
+
+---
+
+### ping(3002)
+
+Add
+
+```text
+3002
+```
+
+Queue
+
+```text
+1 100 3001 3002
+```
+
+Window
+
+```text
+[2, 3002]
+```
+
+Now
+
+```text
+1 < 2
+```
+
+Remove
+
+```text
+1
+```
+
+Queue
+
+```text
+Front → 100 3001 3002 ← Rear
+```
+
+Return
+
+```text
+3
+```
+
+---
+
+# **4. Algorithm**
+
+For every `ping(t)`:
+
+1. Insert `t` into the queue.
+
+2. While the queue is not empty and
+
+   ```text
+   queue.front < t - 3000
+   ```
+
+   Remove the front element.
+
+3. Return
+
+   ```text
+   queue.size()
+   ```
+
+---
+
+# **5. Dry Run**
+
+Input
+
+```text
+ping(1)
+
+ping(100)
+
+ping(3001)
+
+ping(3002)
+```
+
+---
+
+### ping(1)
+
+Queue
+
+```text
+1
+```
+
+Return
+
+```text
+1
+```
+
+---
+
+### ping(100)
+
+Queue
+
+```text
+1 100
+```
+
+Window
+
+```text
+[-2900,100]
+```
+
+Nothing removed.
+
+Return
+
+```text
+2
+```
+
+---
+
+### ping(3001)
+
+Queue
+
+```text
+1 100 3001
+```
+
+Window
+
+```text
+[1,3001]
+```
+
+Nothing removed.
+
+Return
+
+```text
+3
+```
+
+---
+
+### ping(3002)
+
+Queue
+
+```text
+1 100 3001 3002
+```
+
+Window
+
+```text
+[2,3002]
+```
+
+Remove
+
+```text
+1
+```
+
+Queue
+
+```text
+100 3001 3002
+```
+
+Return
+
+```text
+3
+```
+
+---
+
+Final Output
+
+```text
+[1,2,3,3]
+```
+
+---
+
+# **6. Why does this work?**
+
+The queue always stores only the requests within the last **3000 milliseconds**.
+
+When a new request arrives:
+
+* Add it to the rear.
+* Remove all outdated requests from the front.
+
+Since requests come in increasing order of time, once a request is removed, it will never be needed again.
+
+Each request is:
+
+* added once
+* removed once
+
+So the algorithm is very efficient.
+
+---
+
+# **7. Java Code**
+
+```java
+class RecentCounter {
+
+    Queue<Integer> queue;
+
+    public RecentCounter() {
+        queue = new LinkedList<>();
+    }
+
+    public int ping(int t) {
+
+        queue.offer(t);
+
+        while (queue.peek() < t - 3000) {
+            queue.poll();
+        }
+
+        return queue.size();
+    }
+}
+```
+
+> **Safer version (recommended):**
+
+```java
+class RecentCounter {
+
+    Queue<Integer> queue;
+
+    public RecentCounter() {
+        queue = new LinkedList<>();
+    }
+
+    public int ping(int t) {
+
+        queue.offer(t);
+
+        while (!queue.isEmpty() && queue.peek() < t - 3000) {
+            queue.poll();
+        }
+
+        return queue.size();
+    }
+}
+```
+
+---
+
+# **8. Time Complexity**
+
+Each request is inserted once and removed at most once.
+
+For `n` calls:
+
+```text
+O(n)
+```
+
+Amortized time per `ping()`:
+
+```text
+O(1)
+```
+
+---
+
+# **9. Space Complexity**
+
+The queue stores only the recent requests (at most all requests in the last 3000 ms).
+
+Worst case:
+
+```text
+O(n)
+```
+
+---
+
+# **10. Important Interview Note**
+
+This is a classic **Sliding Window using a Queue**.
+
+The queue always represents the current window:
+
+```text
+[t - 3000, t]
+```
+
+Whenever a new request arrives:
+
+* Enqueue it.
+* Dequeue all outdated requests.
+* The queue size is the answer.
+
+Unlike array-based sliding window problems, we don't use two pointers because the data arrives **online** (one request at a time). A queue naturally maintains the moving window.
+
+---
+
+# **11. One-line Note for Interviews**
+
+**Use a Queue to maintain all requests within the last 3000 milliseconds. Enqueue the current request, dequeue all requests older than `t - 3000`, and return the queue size.** 🚀
