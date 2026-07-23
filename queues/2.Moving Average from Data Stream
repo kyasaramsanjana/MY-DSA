@@ -1,0 +1,545 @@
+# **346. Moving Average from Data Stream**
+
+---
+
+# **1. Understand the Problem**
+
+We need to design a class `MovingAverage` that supports one operation:
+
+```text
+next(val)
+```
+
+For every new number, return the **average of the last `size` numbers**.
+
+If fewer than `size` numbers have been received, calculate the average of all available numbers.
+
+---
+
+### Example
+
+Suppose
+
+```text
+size = 3
+```
+
+Input
+
+```text
+next(1)
+
+next(10)
+
+next(3)
+
+next(5)
+```
+
+Output
+
+```text
+1.0
+
+5.5
+
+4.66667
+
+6.0
+```
+
+---
+
+### Explanation
+
+|     Call | Window   | Sum | Average |
+| -------: | :------- | --: | ------: |
+|  next(1) | [1]      |   1 |     1.0 |
+| next(10) | [1,10]   |  11 |     5.5 |
+|  next(3) | [1,10,3] |  14 | 4.66667 |
+|  next(5) | [10,3,5] |  18 |     6.0 |
+
+---
+
+# **2. The Tricky Part**
+
+A brute-force approach:
+
+For every new value,
+
+Store all numbers.
+
+Then sum the last `size` elements every time.
+
+Example
+
+```text
+Window Size = 3
+
+1 10 3 5
+       ↑
+```
+
+For
+
+```text
+next(5)
+```
+
+Compute
+
+```text
+10 + 3 + 5 = 18
+```
+
+Average
+
+```text
+18 / 3 = 6
+```
+
+Doing this for every call takes
+
+```text
+O(size)
+```
+
+per operation.
+
+Too slow.
+
+---
+
+# **3. Key Observation**
+
+We don't need to recalculate the sum every time.
+
+Maintain:
+
+* A **Queue** containing only the last `size` numbers.
+* A running **sum**.
+
+Whenever a new number arrives:
+
+* Add it to the queue.
+* Add it to the sum.
+* If the queue becomes larger than `size`,
+  remove the oldest element and subtract it from the sum.
+
+Now,
+
+Average is simply
+
+```text
+sum / queue.size()
+```
+
+---
+
+### Picture
+
+Window Size
+
+```text
+3
+```
+
+Initially
+
+```text
+Queue
+
+Empty
+
+Sum = 0
+```
+
+---
+
+### next(1)
+
+Add
+
+```text
+1
+```
+
+Queue
+
+```text
+Front → 1 ← Rear
+```
+
+Sum
+
+```text
+1
+```
+
+Average
+
+```text
+1 / 1 = 1.0
+```
+
+---
+
+### next(10)
+
+Add
+
+```text
+10
+```
+
+Queue
+
+```text
+Front → 1 10 ← Rear
+```
+
+Sum
+
+```text
+11
+```
+
+Average
+
+```text
+11 / 2 = 5.5
+```
+
+---
+
+### next(3)
+
+Add
+
+```text
+3
+```
+
+Queue
+
+```text
+Front → 1 10 3 ← Rear
+```
+
+Sum
+
+```text
+14
+```
+
+Average
+
+```text
+14 / 3 = 4.66667
+```
+
+---
+
+### next(5)
+
+Add
+
+```text
+5
+```
+
+Queue
+
+```text
+1 10 3 5
+```
+
+Queue size becomes
+
+```text
+4
+```
+
+Remove oldest
+
+```text
+1
+```
+
+Queue
+
+```text
+Front → 10 3 5 ← Rear
+```
+
+New Sum
+
+```text
+14 + 5 - 1 = 18
+```
+
+Average
+
+```text
+18 / 3 = 6.0
+```
+
+---
+
+# **4. Algorithm**
+
+For every `next(val)`:
+
+1. Add `val` to the queue.
+
+2. Add `val` to `sum`.
+
+3. If
+
+   ```text
+   queue.size() > size
+   ```
+
+   * Remove the front element.
+   * Subtract it from `sum`.
+
+4. Return
+
+   ```text
+   sum / queue.size()
+   ```
+
+---
+
+# **5. Dry Run**
+
+Window Size
+
+```text
+3
+```
+
+Input
+
+```text
+1
+
+10
+
+3
+
+5
+```
+
+---
+
+### next(1)
+
+Queue
+
+```text
+1
+```
+
+Sum
+
+```text
+1
+```
+
+Average
+
+```text
+1.0
+```
+
+---
+
+### next(10)
+
+Queue
+
+```text
+1 10
+```
+
+Sum
+
+```text
+11
+```
+
+Average
+
+```text
+5.5
+```
+
+---
+
+### next(3)
+
+Queue
+
+```text
+1 10 3
+```
+
+Sum
+
+```text
+14
+```
+
+Average
+
+```text
+4.66667
+```
+
+---
+
+### next(5)
+
+Queue
+
+```text
+1 10 3 5
+```
+
+Remove
+
+```text
+1
+```
+
+Queue
+
+```text
+10 3 5
+```
+
+Sum
+
+```text
+18
+```
+
+Average
+
+```text
+6.0
+```
+
+---
+
+Final Output
+
+```text
+[1.0,5.5,4.66667,6.0]
+```
+
+---
+
+# **6. Why does this work?**
+
+The queue always stores **only the latest `size` elements**.
+
+The running `sum` is updated whenever:
+
+* A new element is added.
+* An old element is removed.
+
+So, instead of recalculating the sum every time, we simply use:
+
+```text
+Average = sum / queue.size()
+```
+
+Each element is:
+
+* added once
+* removed once
+
+So every operation is efficient.
+
+---
+
+# **7. Java Code**
+
+```java
+class MovingAverage {
+
+    Queue<Integer> queue;
+    int size;
+    double sum;
+
+    public MovingAverage(int size) {
+        this.size = size;
+        this.queue = new LinkedList<>();
+        this.sum = 0;
+    }
+
+    public double next(int val) {
+
+        queue.offer(val);
+        sum += val;
+
+        if (queue.size() > size) {
+            sum -= queue.poll();
+        }
+
+        return sum / queue.size();
+    }
+}
+```
+
+---
+
+# **8. Time Complexity**
+
+Each number is:
+
+* inserted once
+* removed at most once
+
+Amortized time per `next()`:
+
+```text
+O(1)
+```
+
+For `n` calls:
+
+```text
+O(n)
+```
+
+---
+
+# **9. Space Complexity**
+
+The queue stores at most `size` elements.
+
+```text
+O(size)
+```
+
+---
+
+# **10. Important Interview Note**
+
+This is a classic **Sliding Window** problem implemented using a **Queue**.
+
+Instead of recomputing the sum of the window every time:
+
+* Keep a running `sum`.
+* Enqueue the new value.
+* Dequeue the oldest value when the window exceeds `size`.
+* Compute the average in **O(1)** time.
+
+---
+
+# **11. One-line Note for Interviews**
+
+**Use a Queue to maintain the last `size` numbers and a running `sum`. Add the new value, remove the oldest if the window exceeds `size`, then return `sum / queue.size()`.** 🚀
