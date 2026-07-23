@@ -8,9 +8,6 @@ Given an integer array `nums`, return:
 
 - `true` → if any number appears more than once.
 - `false` → if all numbers are unique.
-
----
-
 ## Example 1
 
 Input:
