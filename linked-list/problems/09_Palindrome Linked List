@@ -1,0 +1,419 @@
+# **234. Palindrome Linked List**
+
+---
+
+# **1. Understand the Problem**
+
+We are given:
+
+* The **head** of a singly linked list.
+
+We need to determine whether the linked list is a **palindrome**.
+
+A palindrome means the list reads the same **from left to right** and **from right to left**.
+
+Return:
+
+* `true` → if it is a palindrome.
+* `false` → otherwise.
+
+---
+
+### Example 1
+
+```text
+Input
+
+1 → 2 → 2 → 1
+```
+
+Output
+
+```text
+true
+```
+
+The list is the same when read forwards and backwards.
+
+---
+
+### Example 2
+
+```text
+Input
+
+1 → 2
+```
+
+Output
+
+```text
+false
+```
+
+The list is not the same in reverse order.
+
+---
+
+# **2. The Tricky Part**
+
+A simple approach is:
+
+* Copy all node values into an array.
+* Use two pointers on the array to check whether it is a palindrome.
+
+Example
+
+```text
+Linked List
+
+1 → 2 → 2 → 1
+
+Array
+
+[1,2,2,1]
+```
+
+Compare
+
+```text
+1 == 1 ✓
+
+2 == 2 ✓
+```
+
+Return `true`.
+
+This works but uses
+
+```text
+O(n)
+```
+
+extra space.
+
+Can we solve it using **O(1)** extra space?
+
+Yes!
+
+---
+
+# **3. Key Observation**
+
+Instead of copying values,
+
+We can:
+
+1. Find the **middle** of the linked list.
+2. Reverse the **second half**.
+3. Compare the first half with the reversed second half.
+4. If all values match,
+
+   * It is a palindrome.
+
+---
+
+### Picture
+
+Original List
+
+```text
+1 → 2 → 2 → 1
+```
+
+---
+
+### Step 1
+
+Find the middle using **slow** and **fast** pointers.
+
+```text
+slow
+↓
+
+1 → 2 → 2 → 1
+      ↑
+     middle
+```
+
+---
+
+### Step 2
+
+Reverse the second half.
+
+Before
+
+```text
+2 → 1
+```
+
+After
+
+```text
+1 → 2
+```
+
+Now
+
+```text
+First Half
+
+1 → 2
+
+Second Half
+
+1 → 2
+```
+
+---
+
+### Step 3
+
+Compare
+
+```text
+1 == 1 ✓
+
+2 == 2 ✓
+```
+
+Everything matches.
+
+Return
+
+```text
+true
+```
+
+---
+
+# **4. Algorithm**
+
+1. Find the middle of the linked list using slow and fast pointers.
+2. Reverse the second half of the list.
+3. Compare nodes from:
+
+   * beginning of the list
+   * beginning of the reversed second half.
+4. If any values differ,
+
+   * return `false`.
+5. Otherwise,
+
+   * return `true`.
+
+---
+
+# **5. Dry Run**
+
+### Input
+
+```text
+1 → 2 → 2 → 1
+```
+
+---
+
+### Step 1
+
+Find middle
+
+```text
+slow = second 2
+```
+
+---
+
+### Step 2
+
+Reverse second half
+
+Before
+
+```text
+2 → 1
+```
+
+After
+
+```text
+1 → 2
+```
+
+---
+
+### Step 3
+
+Compare
+
+First nodes
+
+```text
+1 == 1 ✓
+```
+
+Move both pointers.
+
+Second nodes
+
+```text
+2 == 2 ✓
+```
+
+Move both pointers.
+
+Second half ends.
+
+Return
+
+```text
+true
+```
+
+---
+
+### Another Dry Run
+
+Input
+
+```text
+1 → 2
+```
+
+Find middle
+
+```text
+2
+```
+
+Reverse
+
+```text
+2
+```
+
+Compare
+
+```text
+1 != 2
+```
+
+Return
+
+```text
+false
+```
+
+---
+
+# **6. Why does this work?**
+
+A palindrome has two identical halves when one half is reversed.
+
+Using the slow and fast pointers,
+
+we find the middle in one traversal.
+
+By reversing only the second half,
+
+we can compare corresponding nodes directly without using extra memory.
+
+After comparison,
+
+if every pair matches,
+
+the linked list is a palindrome.
+
+---
+
+# **7. Java Code**
+
+```java
+class Solution {
+
+    public boolean isPalindrome(ListNode head) {
+
+        if (head == null || head.next == null)
+            return true;
+
+        // Find the middle
+        ListNode slow = head;
+        ListNode fast = head;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        // Reverse second half
+        ListNode prev = null;
+
+        while (slow != null) {
+            ListNode next = slow.next;
+            slow.next = prev;
+            prev = slow;
+            slow = next;
+        }
+
+        // Compare both halves
+        ListNode first = head;
+        ListNode second = prev;
+
+        while (second != null) {
+
+            if (first.val != second.val)
+                return false;
+
+            first = first.next;
+            second = second.next;
+        }
+
+        return true;
+    }
+}
+```
+
+---
+
+# **8. Time Complexity**
+
+**O(n)**
+
+* Finding the middle → O(n)
+* Reversing the second half → O(n)
+* Comparing both halves → O(n)
+
+Overall:
+
+```text
+O(n)
+```
+
+---
+
+# **9. Space Complexity**
+
+**O(1)**
+
+Only a few pointers are used.
+
+No extra array or stack is required.
+
+---
+
+# **10. Important Interview Note**
+
+This problem combines **three important linked list techniques**:
+
+* **Fast & Slow Pointers** → Find the middle.
+* **Reverse a Linked List** → Reverse the second half.
+* **Two-Pointer Comparison** → Compare both halves.
+
+> **Note:** Some interviewers may ask you to **restore the original linked list** after checking. In that case, reverse the second half again after the comparison.
+
+---
+
+# **11. One-line Note for Interviews**
+
+**Find the middle using slow and fast pointers, reverse the second half, then compare both halves node by node. If all values match, the linked list is a palindrome.** 🚀
