@@ -1,9 +1,6 @@
 # **20. Valid Parentheses*
 
 # **1. Understand the Problem**
-
-We are given:
-
 * A string `s` containing only the characters:
 
   * `'('`, `')'`
