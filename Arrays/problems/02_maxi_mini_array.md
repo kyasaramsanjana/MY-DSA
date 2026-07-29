@@ -1,7 +1,4 @@
  Find Maximum and Minimum in Array
-
-## Learning Sources
-* GeeksforGeeks: https://www.geeksforgeeks.org/program-to-find-largest-element-in-an-array/
 ## Problem Statement
 Given an array of integers, find the maximum and minimum element in the array.
 ### Example
