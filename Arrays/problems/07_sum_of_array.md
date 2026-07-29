@@ -1,9 +1,5 @@
 # Sum of Array Elements
 
-## Learning Sources
-
-GeeksforGeeks: https://www.geeksforgeeks.org/sum-elements-array/
-
 ## Problem Statement
 
 Given an array of integers, find the sum of all elements present in the array.
