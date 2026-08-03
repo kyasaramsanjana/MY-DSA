@@ -6,9 +6,7 @@
 
 Since a queue follows **FIFO (First In, First Out)**, the element that was inserted first is removed first.
 
-> **Definition:** Dequeue means removing an element from the **front (beginning)** of the queue.
-
----
+> **Definition:** Dequeue means removing an element from the **front (beginning)** of the queue
 
 # Visual Representation
 
