@@ -1,7 +1,5 @@
 # 📚 Queue Notes (Complete DSA Notes)
 
----
-
 # Queue
 
 A **Queue** is a **Linear Data Structure** that follows the **FIFO (First In First Out)** principle.
