@@ -1,7 +1,6 @@
 1. Understand the problem
 
 We are given:
-
 Only the node to delete.
 We are NOT given the head of the linked list.
 
