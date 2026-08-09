@@ -1,8 +1,7 @@
 # Initial Linked List
 
 Suppose we have:
-
-```text
+text
 10 → 20 → 30 → null
 # 1. Insert at Beginning
 
