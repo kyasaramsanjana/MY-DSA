@@ -11,7 +11,7 @@ Since a queue follows **FIFO (First In, First Out)**, a new element is **always 
 
 Initially, the queue is:
 
-```text
+          text
 Front                Rear
   ↓                    ↓
 +----+----+----+
