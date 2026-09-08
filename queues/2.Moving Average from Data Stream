@@ -2,14 +2,10 @@
 
 ---
 
-# **1. Understand the Problem**
+**1. Understand the Problem**
 
 We need to design a class `MovingAverage` that supports one operation:
-
-```text
 next(val)
-```
-
 For every new number, return the **average of the last `size` numbers**.
 
 If fewer than `size` numbers have been received, calculate the average of all available numbers.
