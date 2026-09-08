@@ -7,9 +7,6 @@
 Since a queue follows **FIFO (First In, First Out)**, a new element is **always inserted at the Rear** of the queue.
 
 > **Definition:** Enqueue means adding an element to the **rear (end)** of the queue.
-
----
-
 # Visual Representation
 
 Initially, the queue is:
