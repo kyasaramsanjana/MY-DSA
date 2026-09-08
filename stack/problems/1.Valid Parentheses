@@ -448,8 +448,6 @@ Remember:
 
 Also, always check if the stack is empty before popping to avoid errors.
 
----
-
 # **11. One-line Note for Interviews**
 
 **Use a stack to store opening brackets. For every closing bracket, pop the top element and check if it matches. If all brackets match and the stack is empty at the end, the string is valid.** 🚀
