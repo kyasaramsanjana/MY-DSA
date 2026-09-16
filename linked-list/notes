@@ -45,6 +45,8 @@ javaNode head = new Node(10);
 head.next = new Node(20);
 head.next.next = new Node(30);
 // Result: 10 → 20 → 30 → null
+
+
 b) Traverse (print all nodes)
 javavoid printList(Node head) {
     Node temp = head;           // start from head
@@ -54,6 +56,8 @@ javavoid printList(Node head) {
     }
     System.out.println("null");
 }
+
+
 c) Insert at Beginning
 javaNode insertAtStart(Node head, int val) {
     Node newNode = new Node(val);
