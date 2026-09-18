@@ -12,5 +12,5 @@
 -contains duplicates
 -missing numbers
 -move zeros
--plus one
+
 Total Problems Solved: 11
