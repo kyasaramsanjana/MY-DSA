@@ -1,7 +1,6 @@
 **933. Number of Recent Calls**
 
 
-
 # **1. Understand the Problem**
 
 We need to design a class `RecentCounter` that supports one operation:
