@@ -1,7 +1,4 @@
-346. Moving Average from Data Stream**
-
----
-
+**346. Moving Average from Data Stream**
 **1. Understand the Problem**
 
 We need to design a class `MovingAverage` that supports one operation:
