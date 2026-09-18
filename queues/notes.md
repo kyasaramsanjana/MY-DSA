@@ -1,4 +1,4 @@
-# 📚 Queue Notes (Complete DSA Notes)
+Queue Notes
 
 # Queue
 
