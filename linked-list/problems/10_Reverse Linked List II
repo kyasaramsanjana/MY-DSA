@@ -1,0 +1,775 @@
+# **92. Reverse Linked List II**
+
+---
+
+# **1. Understand the Problem**
+
+We are given:
+
+* The **head** of a singly linked list.
+* Two integers **left** and **right**.
+
+We need to **reverse the nodes from position `left` to position `right`** and return the modified linked list.
+
+---
+
+### Example 1
+
+```text
+Input
+
+head
+
+1 → 2 → 3 → 4 → 5
+
+left = 2
+right = 4
+```
+
+We need to reverse the nodes between positions **2 and 4**.
+
+```text
+2 → 3 → 4
+```
+
+After reversing:
+
+```text
+4 → 3 → 2
+```
+
+So the final list becomes:
+
+```text
+1 → 4 → 3 → 2 → 5
+```
+
+Output:
+
+```text
+[1,4,3,2,5]
+```
+
+---
+
+### Example 2
+
+```text
+Input
+
+head
+
+5
+
+left = 1
+right = 1
+```
+
+There is only one node in the section.
+
+So nothing needs to be reversed.
+
+Output:
+
+```text
+5
+```
+
+---
+
+# **2. The Tricky Part**
+
+A simple approach would be:
+
+1. Find the nodes between `left` and `right`.
+2. Store them somewhere.
+3. Reverse them.
+4. Connect them back to the original list.
+
+But this requires extra memory.
+
+Can we reverse the section **without using extra data structures?**
+
+Yes! 🚀
+
+We can use **pointer manipulation** and reverse the required section in-place.
+
+---
+
+# **3. Key Observation**
+
+We only need to reverse the portion:
+
+```text
+left → right
+```
+
+For example:
+
+```text
+1 → 2 → 3 → 4 → 5
+```
+
+If:
+
+```text
+left = 2
+right = 4
+```
+
+we only touch:
+
+```text
+2 → 3 → 4
+```
+
+The nodes before and after the section remain connected:
+
+```text
+1 → [2 → 3 → 4] → 5
+```
+
+After reversing:
+
+```text
+1 → [4 → 3 → 2] → 5
+```
+
+---
+
+# **4. Why Use a Dummy Node?**
+
+Suppose:
+
+```text
+1 → 2 → 3 → 4 → 5
+```
+
+and:
+
+```text
+left = 1
+right = 3
+```
+
+We need to reverse:
+
+```text
+1 → 2 → 3
+```
+
+The first node itself is the head.
+
+This makes the connection slightly tricky because there is no node before `1`.
+
+To avoid this special case, create a **dummy node** before the head.
+
+```text
+0 → 1 → 2 → 3 → 4 → 5
+↑
+dummy
+```
+
+Now even when `left = 1`, there is always a node before the section.
+
+---
+
+# **5. Important Pointers**
+
+We use:
+
+### `prev`
+
+Points to the node **before the section being reversed**.
+
+### `current`
+
+Points to the **first node of the section**.
+
+### `next`
+
+Temporarily stores the node that we are going to move.
+
+For:
+
+```text
+1 → 2 → 3 → 4 → 5
+```
+
+with:
+
+```text
+left = 2
+right = 4
+```
+
+initially:
+
+```text
+prev
+ ↓
+1 → 2 → 3 → 4 → 5
+    ↑
+  current
+```
+
+---
+
+# **6. Algorithm**
+
+### Step 1
+
+Create a dummy node.
+
+```java
+ListNode dummy = new ListNode(0);
+dummy.next = head;
+```
+
+---
+
+### Step 2
+
+Set:
+
+```java
+prev = dummy;
+```
+
+Move `prev` until it reaches the node **just before `left`**.
+
+For:
+
+```text
+left = 2
+```
+
+we get:
+
+```text
+0 → 1 → 2 → 3 → 4 → 5
+    ↑
+   prev
+```
+
+---
+
+### Step 3
+
+Set:
+
+```java
+current = prev.next;
+```
+
+So:
+
+```text
+prev
+ ↓
+1 → 2 → 3 → 4 → 5
+    ↑
+  current
+```
+
+---
+
+### Step 4
+
+We need to perform the reversal:
+
+```java
+right - left
+```
+
+times.
+
+For:
+
+```text
+left = 2
+right = 4
+```
+
+we perform it:
+
+```text
+4 - 2 = 2 times
+```
+
+---
+
+# **7. The Main Pointer Trick**
+
+The most important part is:
+
+```java
+ListNode next = current.next;
+
+current.next = next.next;
+
+next.next = prev.next;
+
+prev.next = next;
+```
+
+This takes the node after `current` and moves it to the **front of the reversing section**.
+
+---
+
+# **8. Dry Run**
+
+### Input
+
+```text
+1 → 2 → 3 → 4 → 5
+
+left = 2
+right = 4
+```
+
+---
+
+## Step 1: Create Dummy
+
+```text
+0 → 1 → 2 → 3 → 4 → 5
+↑
+dummy
+```
+
+Set:
+
+```text
+prev = dummy
+```
+
+Move `prev` to position before `left`.
+
+```text
+0 → 1 → 2 → 3 → 4 → 5
+    ↑
+   prev
+```
+
+Now:
+
+```text
+current = prev.next
+```
+
+So:
+
+```text
+0 → 1 → 2 → 3 → 4 → 5
+    ↑   ↑
+   prev current
+```
+
+---
+
+# **9. First Reversal**
+
+Current section:
+
+```text
+2 → 3 → 4
+```
+
+We want:
+
+```text
+2 → 3 → 4
+```
+
+Take:
+
+```text
+next = current.next
+```
+
+So:
+
+```text
+next = 3
+```
+
+Now:
+
+```text
+current = 2
+next = 3
+prev = 1
+```
+
+Perform:
+
+```java
+current.next = next.next;
+```
+
+So:
+
+```text
+2 → 4
+```
+
+Then:
+
+```java
+next.next = prev.next;
+```
+
+So:
+
+```text
+3 → 2 → 4
+```
+
+Then:
+
+```java
+prev.next = next;
+```
+
+Now the list becomes:
+
+```text
+1 → 3 → 2 → 4 → 5
+```
+
+---
+
+# **10. Second Reversal**
+
+Now:
+
+```text
+1 → 3 → 2 → 4 → 5
+```
+
+Again:
+
+```text
+current = 2
+next = 4
+```
+
+Move `4` to the front of the section.
+
+After pointer manipulation:
+
+```text
+1 → 4 → 3 → 2 → 5
+```
+
+Now the section:
+
+```text
+2 → 3 → 4
+```
+
+has become:
+
+```text
+4 → 3 → 2
+```
+
+Final answer:
+
+```text
+1 → 4 → 3 → 2 → 5
+```
+
+---
+
+# **11. Why Does This Work?**
+
+The key idea is:
+
+**We repeatedly take the node immediately after `current` and move it to the front of the reversed section.**
+
+For example:
+
+Initially:
+
+```text
+2 → 3 → 4
+```
+
+First iteration:
+
+```text
+3 → 2 → 4
+```
+
+Second iteration:
+
+```text
+4 → 3 → 2
+```
+
+Therefore:
+
+```text
+2 → 3 → 4
+```
+
+becomes:
+
+```text
+4 → 3 → 2
+```
+
+without creating another linked list.
+
+---
+
+# **12. Java Code**
+
+```java
+class Solution {
+
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+
+        if (head == null || left == right) {
+            return head;
+        }
+
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+
+        ListNode prev = dummy;
+
+        // Move prev to the node before left
+        for (int i = 1; i < left; i++) {
+            prev = prev.next;
+        }
+
+        ListNode current = prev.next;
+
+        // Reverse the section from left to right
+        for (int i = 0; i < right - left; i++) {
+
+            ListNode next = current.next;
+
+            current.next = next.next;
+
+            next.next = prev.next;
+
+            prev.next = next;
+        }
+
+        return dummy.next;
+    }
+}
+```
+
+---
+
+# **13. Code Explanation**
+
+### Create dummy
+
+```java
+ListNode dummy = new ListNode(0);
+dummy.next = head;
+```
+
+Creates:
+
+```text
+dummy → head
+```
+
+This handles the case where `left = 1`.
+
+---
+
+### Find node before `left`
+
+```java
+ListNode prev = dummy;
+
+for (int i = 1; i < left; i++) {
+    prev = prev.next;
+}
+```
+
+After this loop:
+
+```text
+prev
+ ↓
+node before left
+```
+
+---
+
+### Set current
+
+```java
+ListNode current = prev.next;
+```
+
+So `current` is the first node that needs to be reversed.
+
+---
+
+### Reverse the section
+
+```java
+for (int i = 0; i < right - left; i++)
+```
+
+We perform the pointer manipulation exactly:
+
+```text
+right - left
+```
+
+times.
+
+---
+
+### Store next node
+
+```java
+ListNode next = current.next;
+```
+
+We don't want to lose the next node.
+
+---
+
+### Skip next node from current
+
+```java
+current.next = next.next;
+```
+
+This removes `next` from its current position.
+
+---
+
+### Move next to front
+
+```java
+next.next = prev.next;
+prev.next = next;
+```
+
+This inserts `next` immediately after `prev`.
+
+---
+
+# **14. Edge Case**
+
+Suppose:
+
+```text
+head = 1 → 2 → 3
+
+left = 1
+right = 3
+```
+
+We need to reverse the entire list.
+
+Using the dummy node:
+
+```text
+0 → 1 → 2 → 3
+↑
+dummy
+```
+
+The algorithm works without any special handling.
+
+Output:
+
+```text
+3 → 2 → 1
+```
+
+---
+
+# **15. Another Edge Case**
+
+If:
+
+```text
+left = right
+```
+
+there is nothing to reverse.
+
+Example:
+
+```text
+1 → 2 → 3 → 4 → 5
+
+left = 3
+right = 3
+```
+
+Output remains:
+
+```text
+1 → 2 → 3 → 4 → 5
+```
+
+That's why we can directly return:
+
+```java
+if (head == null || left == right) {
+    return head;
+}
+```
+
+---
+
+# **16. Time Complexity**
+
+**O(n)**
+
+We traverse the list to reach `left` and then reverse the required section.
+
+Overall:
+
+```text
+O(n)
+```
+
+---
+
+# **17. Space Complexity**
+
+**O(1)**
+
+We only use a few pointers:
+
+```text
+dummy
+prev
+current
+next
+```
+
+No array, stack, or extra linked list is created.
+
+---
+
+# **18. Important Interview Note**
+
+The most important trick in this problem is the **front-insertion technique**.
+
+Instead of reversing the entire list, repeatedly take the node after `current` and move it to the front of the selected section.
+
+The dummy node makes the solution work even when `left = 1`.
+
+---
+
+# **19. One-line Note for Interviews**
+
+**Use a dummy node and three pointers. Move `prev` to the node before `left`, then repeatedly take the node after `current` and move it to the front until the section from `left` to `right` is reversed.** 🚀
