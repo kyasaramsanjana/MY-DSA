@@ -1,6 +1,5 @@
 203. Remove Linked List Elements
-
-## 1. Understand the problem
+1. Understand the problem
 
 We are given:
 
