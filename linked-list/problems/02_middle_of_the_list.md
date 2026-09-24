@@ -77,7 +77,7 @@ We can do better.
 
 ---
 
-# 3. Best approach (Slow and Fast pointers)
+# 3. Best approach for this (Slow and Fast pointers)
 
 Use two pointers.
 
