@@ -725,7 +725,7 @@ A
 * 641. Design Circular Deque
 * 649. Dota2 Senate
 * 2073. Time Needed to Buy Tickets
-* 1700. Number of Students Unable to Eat Lunch
+* 1700. Number of Students Unable to Eat lunch
 
 ### Hard
 
