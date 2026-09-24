@@ -1,5 +1,5 @@
 **346. Moving Average from Data Stream**
-**1. Understand the Problem**
+**1. Understand the Problem now**
 
 We need to design a class `MovingAverage` that supports one operation:
 next(val)
